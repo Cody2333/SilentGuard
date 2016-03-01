@@ -22,6 +22,7 @@ import android.app.Dialog;
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -77,7 +78,12 @@ public class EventService extends Service implements SensorEventListener {
         builder = new Builder(getApplicationContext());
         builder.setTitle("Alert");
         builder.setMessage("You are not the owner!");
-        builder.setNegativeButton("OK", null);
+        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         dialog = builder.create();
         dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
     }
@@ -364,7 +370,6 @@ public class EventService extends Service implements SensorEventListener {
     }
 
     private void showBox() {
-        getApplication().startActivity(i);
         dialog.show();
     }
 

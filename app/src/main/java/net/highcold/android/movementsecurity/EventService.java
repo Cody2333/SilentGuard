@@ -43,20 +43,11 @@ public class EventService extends Service implements SensorEventListener {
     private IBinder myBinder = new MyBinder();
     private SensorManager sm;
     Events events = new Events();
-    int count = 0, cflag = 0;
     Builder builder;
     Dialog dialog;
     Intent i;
-    //
-    ArrayList<Node> nodes = new ArrayList<Node>();
-    ArrayList<Node> copyOfNodes = new ArrayList<Node>();
-    // 保存加速器和陀螺仪值的队列
-    LinkedBlockingQueue<AcceleratorValue> accelerator = new LinkedBlockingQueue<AcceleratorValue>();
-    LinkedBlockingQueue<GyroscopeValue> gyroscope = new LinkedBlockingQueue<GyroscopeValue>();
+
     boolean flag = false;
-    // 当屏幕事件保存时，加速器值保存至下面缓冲队列
-    LinkedBlockingQueue<AcceleratorValue> bufferQueue2 = new LinkedBlockingQueue<AcceleratorValue>();
-    LinkedBlockingQueue<GyroscopeValue> bufferQueue3 = new LinkedBlockingQueue<GyroscopeValue>();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -130,8 +121,8 @@ public class EventService extends Service implements SensorEventListener {
         // 打开所有设备
         for (InputDevice idev : events.m_Devs) {
             if (idev.Open(true)) {
-                // Toast.makeText(getApplicationContext(),
-                // "Device opened successfully!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),
+                        "Device opened successfully!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(getApplicationContext(),
                         "Device failed to open. Do you have root?",
@@ -148,7 +139,7 @@ public class EventService extends Service implements SensorEventListener {
 
                 if (!outFile.exists()) {
                     try {
-                        Log.d(TAG, "create file");
+                        Log.i(TAG, "create file");
                         outFile.createNewFile();
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
@@ -157,7 +148,7 @@ public class EventService extends Service implements SensorEventListener {
                 }
                 if (!originalScreenDataFile.exists()) {
                     try {
-                        Log.d(TAG, "create file");
+                        Log.i(TAG, "create file");
                         originalScreenDataFile.createNewFile();
                     } catch (IOException e) {
                         // TODO Auto-generated catch block
@@ -181,23 +172,14 @@ public class EventService extends Service implements SensorEventListener {
                                 code = idev.getSuccessfulPollingCode();
                                 value = idev.getSuccessfulPollingValue();
 
-                                if ((type == 3 && code == 53)) {
-                                    for (InputDevice allDev : events.m_Devs) {
-                                        if (allDev != idev) {
-                                            allDev.Close();
-                                            events.m_Devs.remove(allDev); // 关掉其它设备，仅保留屏幕设备
-                                        }
-                                    }
-                                }
-
                                 final String line = idev.getName() + ":"
-                                        + idev.getSuccessfulPollingType() + " "
-                                        + idev.getSuccessfulPollingCode() + " "
-                                        + idev.getSuccessfulPollingValue()
+                                        + type + " "
+                                        + code + " "
+                                        + value
                                         + " timestamp:" + currentTimeMillis
                                         + " appName:"
                                         + getCurrentActivityName();
-                                Log.d("data", line);
+                                Log.i("data", line);
                                 BufferedWriter bufferedWriter = new BufferedWriter(
                                         new FileWriter(originalScreenDataFile,
                                                 true));
@@ -206,60 +188,10 @@ public class EventService extends Service implements SensorEventListener {
                                 bufferedWriter.flush();
                                 bufferedWriter.close();
 
-                                if (type == 3 && code == 58) {
-                                    temp = new Node();
-                                    hasPressure = true;
-                                    temp.pressure = value;
-                                    break;
-                                } else if (type == 3 && code == 53) {
-                                    if (!hasPressure)
-                                        temp = new Node();
-                                    temp.beginTimestamp = currentTimeMillis;
-                                    temp.x = value;
-                                    break;
-                                } else if (type == 3 && code == 54) {
-                                    temp.y = value;
-                                    // temp.endTimestamp =
-                                    // currentTimeMillis;
-                                    if (temp.x != 0 && temp.y != 0
-                                            && temp.beginTimestamp != 0)
-                                        nodes.add(temp);
-                                    hasPressure = false;
-                                    break;
-                                } else if (type == 1 && code == 330
-                                        && value == 0) { // 时间结束
-                                    nodes.get(nodes.size() - 1).endTimestamp = currentTimeMillis;
-                                    flag = true; // 让传感器值写入缓冲队列
-                                    ScreenEvent screenEvent = new ScreenEvent(
-                                            nodes, accelerator, gyroscope,
-                                            getCurrentActivityName());
-                                    flag = false; // 将传感器值写入生成队列
-                                    nodes.clear();
-                                    if (screenEvent.judge()) {
-                                        screenEvent.save(outFile); // 保存主人数据到文件
-                                        //下方代码为测试消息框跳出
-                                        count++;
-                                        if (count > 8) {  //连续有多少个手势被判断为非主人的数据
-                                            //screenEvent.alert(getApplicationContext());
-                                            cflag = 1;
-                                            count = 0;
-                                        }
-
-                                    } else {
-                                        count++;
-                                        if (count > 8) {  //连续有多少个手势被判断为非主人的数据
-                                            //screenEvent.alert(getApplicationContext());
-                                            cflag = 1;
-                                            count = 0;
-                                        }
-                                    }
-                                }
-
                             }
-
                         }
                     } catch (Exception e) {
-                        System.out.println("screen event");
+                        e.printStackTrace();
                     }
                 }
             }
@@ -280,13 +212,9 @@ public class EventService extends Service implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
         // TODO Auto-generated method stub
         File outFile = new File("/sdcard/eventInjectSensor.txt");
-        if (cflag == 1) {
-            showBox();
-            cflag = 0;
-        }
         if (!outFile.exists()) {
             try {
-                Log.d(TAG, "create file");
+                Log.i(TAG, "create file");
                 outFile.createNewFile();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -304,23 +232,6 @@ public class EventService extends Service implements SensorEventListener {
                 double acce = event.values[0] * event.values[0] + event.values[1]
                         * event.values[1] + event.values[2] * event.values[2];
                 acce = Math.sqrt(acce);
-                AcceleratorValue acceleratorValue = new AcceleratorValue(acce,
-                        currentTimeMillis);
-                if (flag) {
-                    bufferQueue2.offer(acceleratorValue);
-                } else {
-
-                    try {
-                        if (!bufferQueue2.isEmpty()) {
-                            accelerator.addAll(bufferQueue2);
-                            bufferQueue2.clear();
-                        }
-                        accelerator.put(acceleratorValue); // 将值添加至队列中
-                    } catch (InterruptedException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                }
                 break;
             case Sensor.TYPE_GYROSCOPE:
                 line = "Gyroscope: " + event.values[0] + ", " + event.values[1]
@@ -329,30 +240,13 @@ public class EventService extends Service implements SensorEventListener {
                 double gyro = event.values[0] * event.values[0] + event.values[1]
                         * event.values[1] + event.values[2] * event.values[2];
                 gyro = Math.sqrt(gyro);
-                GyroscopeValue gyroscopeValue = new GyroscopeValue(gyro,
-                        currentTimeMillis);
-                if (flag) { // 正在保存 ScreenEvent 事件
-                    bufferQueue3.offer(gyroscopeValue); // 传感器值写入缓冲队列
-                } else {
-                    try {
-                        if (!bufferQueue3.isEmpty()) { // 缓冲队列不为空
-                            gyroscope.addAll(bufferQueue3); // 添加到生成队列
-                            bufferQueue3.clear(); // 情况缓冲队列
-                        }
-                        gyroscope.put(gyroscopeValue); // 将传感器值写入生成队列
-                    } catch (InterruptedException e1) {
-                        // TODO Auto-generated catch block
-                        System.out.print("bufferQueue");
-                        e1.printStackTrace();
-                    }
-                }
                 break;
             default:
                 break;
         }
 
         try {
-            // Log.d("data", line);
+            // Log.i("data", line);
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(
                     outFile, true));
             bufferedWriter.write(line);

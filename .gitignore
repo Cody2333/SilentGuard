@@ -15,7 +15,7 @@ gen/
 # Intellij project files
 .idea
 *.iml
-
+app/*.iml
 # Gradle files
 .gradle/
 build/

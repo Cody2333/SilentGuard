@@ -28,11 +28,7 @@ model {
     }
     android.ndk {
         moduleName = "movementSecurity"
-        cppFlags += "-std=c++11"
-        cppFlags += "-fexceptions"
-        cppFlags += "-I${file("src/main/jni//include")}".toString()
         ldLibs += ["android", "log"]
-        stl = "gnustl_shared"
     }
 
     android.productFlavors {

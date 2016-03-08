@@ -1,5 +1,7 @@
 package com.lowhot.cody.movement;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,16 +11,38 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 public class MainActivity extends AppCompatActivity {
+    final static String TAG = "MainActivity";
+
+    Events events = new Events();
+    boolean m_bMonitorOn = false;                // used in the thread to poll for input event node  messages
+    private Button btnStart;
+    private Button btnStop;
+    public Activity activity;
+    private Toolbar toolbar;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initView();
         setSupportActionBar(toolbar);
+        activity = this;
+        initListener();
+    }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    public void initView() {
+        btnStart = (Button) findViewById(R.id.btn_monitor_start);
+        btnStop = (Button) findViewById(R.id.btn_monitor_stop);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+    }
+
+    public void initListener() {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -27,15 +51,29 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        String ret = sayHello("project init success !!!!");
-        Log.i("JNI_INFO", ret);
-    }
 
-    static {
-        System.loadLibrary("movementSecurity");
-    }
+        btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (m_bMonitorOn) {
+                    Toast.makeText(getApplicationContext(), "Event monitor already working. Consider opening more devices to monitor.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Intent serviceIntent = new Intent(MainActivity.this, EventService.class);
+                    startService(serviceIntent);
+                }
 
-    public native static String sayHello(String str);
+
+            }
+        });
+        btnStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), EventService.class);
+                StopEventMonitor();
+                stopService(intent);
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -58,4 +96,18 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "App destroyed.");
+        StopEventMonitor();
+        events.Release();
+    }
+
+    public void StopEventMonitor() {
+        m_bMonitorOn = false; //stop reading thread
+    }
+
+
 }

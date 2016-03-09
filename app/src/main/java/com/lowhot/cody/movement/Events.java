@@ -61,13 +61,13 @@ public class Events {
             RemoveDev(m_nId);
         }
 
-        final int EV_KEY = 0x01,
-                EV_REL = 0x02,
-                EV_ABS = 0x03,
-                REL_X = 0x00,
-                REL_Y = 0x01,
-                REL_Z = 0x02,
-                BTN_TOUCH = 0x14a;// 330
+        public static final int EV_KEY = 0x01,
+                                EV_REL = 0x02,
+                                EV_ABS = 0x03,
+                                REL_X = 0x00,
+                                REL_Y = 0x01,
+                                REL_Z = 0x02,
+                                BTN_TOUCH = 0x14a;// 330
 
         public int SendKey(int key, boolean state) {
             if (state)

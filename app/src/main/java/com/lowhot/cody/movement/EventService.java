@@ -21,9 +21,12 @@ import android.widget.Toast;
 
 
 import com.lowhot.cody.movement.uitls.AcceleratorBean;
+import com.lowhot.cody.movement.uitls.AlertDialogUtils;
 import com.lowhot.cody.movement.uitls.GyroscopeBean;
 import com.lowhot.cody.movement.uitls.Node;
 import com.lowhot.cody.movement.uitls.ScreenEvent;
+import com.lowhot.cody.movement.uitls.SensorHandler;
+import com.lowhot.cody.movement.uitls.Utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -36,39 +39,22 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class EventService extends Service implements SensorEventListener {
     private static final String TAG = "EventService";
 
-    private static final int ADMIN = 0;
-    private static final int GUEST = 1;
-
     private SensorManager sm;
     Events events = new Events();
-    int count = 0;
-    int privilege = ADMIN;
-
-    Builder builder;
-    Dialog dialog;
-    Intent i;
-    //
     ArrayList<Node> nodes = new ArrayList<Node>();
-    // 保存加速器和陀螺仪值的队列
-    LinkedBlockingQueue<AcceleratorBean> acceleratorQueue = new LinkedBlockingQueue<AcceleratorBean>();
-    LinkedBlockingQueue<GyroscopeBean> gyroscopeQueue = new LinkedBlockingQueue<GyroscopeBean>();
+    volatile boolean FLAG_SAVING_SCREEN_EVENT = false;
 
-    boolean FLAG_SAVING_SENSOR_EVENT = false;
-    // 当屏幕事件保存时，加速器值保存至下面缓冲队列
-    LinkedBlockingQueue<AcceleratorBean> acceBuffer = new LinkedBlockingQueue<AcceleratorBean>();
-    LinkedBlockingQueue<GyroscopeBean> gyroBuffer = new LinkedBlockingQueue<GyroscopeBean>();
-
+    private SensorHandler sensorHandler;
+    private AlertDialogUtils alertDialogUtils;
     @Override
     public void onCreate() {
         super.onCreate();
-        i = new Intent(getBaseContext(), MainActivity.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        createAlertDialog();
+        sensorHandler = new SensorHandler();
+        alertDialogUtils = new AlertDialogUtils(getApplicationContext());
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        flags = START_STICKY;
         return super.onStartCommand(intent, flags, startId);
 
     }
@@ -96,60 +82,16 @@ public class EventService extends Service implements SensorEventListener {
                 SensorManager.SENSOR_DELAY_GAME);
     }
 
-    public void createAlertDialog() {
-        builder = new Builder(getApplicationContext());
-        builder.setTitle("Alert");
-        builder.setMessage("You are not the owner!");
-        builder.setNegativeButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        dialog = builder.create();
-        dialog.getWindow().setType(WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-    }
+
 
     public void onSensorChanged(SensorEvent event) {
-        if (privilege == GUEST) {
-            showBox();
-            privilege = ADMIN;
-        }
 
         switch (event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
-                AcceleratorBean acceleratorBean = new AcceleratorBean(event.values[0], event.values[1], event.values[2], getTimestamp());
-                if (FLAG_SAVING_SENSOR_EVENT) {
-                    acceBuffer.offer(acceleratorBean);
-                } else {
-
-                    try {
-                        if (!acceBuffer.isEmpty()) {
-                            acceleratorQueue.addAll(acceBuffer);
-                            acceBuffer.clear();
-                        }
-                        acceleratorQueue.put(acceleratorBean); // 将值添加至队列中
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                }
+                sensorHandler.addAccleratorData(event.values[0],event.values[1],event.values[2],FLAG_SAVING_SCREEN_EVENT);
                 break;
             case Sensor.TYPE_GYROSCOPE:
-                GyroscopeBean gyroscopeBean = new GyroscopeBean(event.values[0], event.values[1], event.values[2], getTimestamp());
-                if (FLAG_SAVING_SENSOR_EVENT) { // 正在保存 ScreenEvent 事件
-                    gyroBuffer.offer(gyroscopeBean); // 传感器值写入缓冲队列
-                } else {
-                    try {
-                        if (!gyroBuffer.isEmpty()) { // 缓冲队列不为空
-                            gyroscopeQueue.addAll(gyroBuffer); // 添加到生成队列
-                            gyroBuffer.clear(); // 情况缓冲队列
-                        }
-                        gyroscopeQueue.put(gyroscopeBean); // 将传感器值写入生成队列
-                    } catch (InterruptedException e1) {
-                        // TODO Auto-generated catch block
-                        e1.printStackTrace();
-                    }
-                }
+                sensorHandler.addGyroscopeData(event.values[0], event.values[1], event.values[2], FLAG_SAVING_SCREEN_EVENT);
                 break;
             default:
                 break;
@@ -229,9 +171,9 @@ public class EventService extends Service implements SensorEventListener {
                                         + type + " "
                                         + code + " "
                                         + value
-                                        + " timestamp:" + getTimestamp()
+                                        + " timestamp:" + Utils.getTimestamp()
                                         + " appName:"
-                                        + getCurrentActivityName();
+                                        + Utils.getCurrentActivityName(getApplication());
                                 Log.d("data", line);
                                 BufferedWriter bufferedWriter = new BufferedWriter(
                                         new FileWriter(originalScreenDataFile,
@@ -251,7 +193,7 @@ public class EventService extends Service implements SensorEventListener {
                                     // Coordinate X
                                     if (!hasPressure)
                                         temp = new Node();
-                                    temp.beginTimestamp = getTimestamp();
+                                    temp.beginTimestamp = Utils.getTimestamp();
                                     temp.x = value;
                                     break;
                                 } else if (type == 3 && code == 54) {
@@ -265,12 +207,12 @@ public class EventService extends Service implements SensorEventListener {
                                     break;
                                 } else if (type == 1 && code == 330
                                         && value == 0) { // 时间结束
-                                    nodes.get(nodes.size() - 1).endTimestamp = getTimestamp();
-                                    FLAG_SAVING_SENSOR_EVENT = true; // 让传感器值写入缓冲队列
+                                    nodes.get(nodes.size() - 1).endTimestamp = Utils.getTimestamp();
+                                    FLAG_SAVING_SCREEN_EVENT = true; // 让传感器值写入缓冲队列
                                     ScreenEvent screenEvent = new ScreenEvent(
-                                            nodes, acceleratorQueue, gyroscopeQueue,
-                                            getCurrentActivityName());
-                                    FLAG_SAVING_SENSOR_EVENT = false; // 将传感器值写入生成队列
+                                            nodes, sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
+                                            Utils.getCurrentActivityName(getApplicationContext()));
+                                    FLAG_SAVING_SCREEN_EVENT = false; // 将传感器值写入生成队列
                                     nodes.clear();
                                     if (screenEvent.judge()) {
                                         try {
@@ -321,19 +263,6 @@ public class EventService extends Service implements SensorEventListener {
         return super.onUnbind(intent);
     }
 
-    /**
-     * 获取 当前的activity名称
-     */
-    private String getCurrentActivityName() {
-        ActivityManager am = (ActivityManager) getSystemService(Activity.ACTIVITY_SERVICE);
-        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        return cn.getClassName();
-    }
 
-    private long getTimestamp() {
-        return System.currentTimeMillis();
-    }
-    private void showBox() {
-        dialog.show();
-    }
+
 }

@@ -1,16 +1,16 @@
-package com.lowhot.cody.movement.uitls;
+package com.lowhot.cody.movement.bean;
 
 /**
  * Created by cody_local on 2016/3/8.
  */
-public class AcceleratorBean {
+public class Accelerator {
     private double acce;
     private long timestamp;
     private double x;
     private double y;
     private double z;
 
-    public AcceleratorBean(double x, double y, double z, long timestamp) {
+    public Accelerator(double x, double y, double z, long timestamp) {
         this.timestamp = timestamp;
         this.x = x;
         this.y = y;

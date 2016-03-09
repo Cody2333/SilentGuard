@@ -1,16 +1,16 @@
-package com.lowhot.cody.movement.uitls;
+package com.lowhot.cody.movement.bean;
 
 /**
  * Created by cody_local on 2016/3/8.
  */
-public class GyroscopeBean {
+public class Gyroscope {
     private double x;
     private double y;
     private double z;
     private double gyroscope;
     private long timestamp;
 
-    public GyroscopeBean(double x, double y, double z, long timestamp) {
+    public Gyroscope(double x, double y, double z, long timestamp) {
         this.x = x;
         this.y = y;
         this.z = z;

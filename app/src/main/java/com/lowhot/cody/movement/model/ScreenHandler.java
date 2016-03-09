@@ -4,9 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.lowhot.cody.movement.Events;
+import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.bean.Node;
-import com.lowhot.cody.movement.uitls.Utils;
+import com.lowhot.cody.movement.utils.Utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -101,8 +101,7 @@ public class ScreenHandler {
                 }
 
                 int type, code, value;
-                boolean hasPressure = false;
-                Node temp = new Node();
+                CodeHandler codeHandler = new CodeHandler(nodes);
                 while (true) {
                     try {
                         for (Events.InputDevice idev : events.m_Devs) {
@@ -114,15 +113,6 @@ public class ScreenHandler {
                                 code = idev.getSuccessfulPollingCode();
                                 value = idev.getSuccessfulPollingValue();
 
-                    /*)            if ((type == 3 && code == 53)) {
-                                    for (Events.InputDevice allDev : events.m_Devs) {
-                                        if (allDev != idev) {
-                                            allDev.Close();
-                                            events.m_Devs.remove(allDev); // 关掉其它设备，仅保留屏幕设备
-                                        }
-                                    }
-                                }*/
-
                                 final String line = idev.getName() + ":"
                                         + type + " "
                                         + code + " "
@@ -130,40 +120,10 @@ public class ScreenHandler {
                                         + " timestamp:" + Utils.getTimestamp()
                                         + " appName:"
                                         + Utils.getCurrentActivityName(ctx);
-                                Log.d("data", line);
-                                BufferedWriter bufferedWriter = new BufferedWriter(
-                                        new FileWriter(originalScreenDataFile,
-                                                true));
-                                bufferedWriter.write(line);
-                                bufferedWriter.newLine();
-                                bufferedWriter.flush();
-                                bufferedWriter.close();
+                                Utils.writeTxt(originalScreenDataFile, line);
 
-                                if (type == 3 && code == 58) {
-                                    //touch begin
-                                    temp = new Node();
-                                    hasPressure = true;
-                                    temp.pressure = value;
-                                    break;
-                                } else if (type == 3 && code == 53) {
-                                    // Coordinate X
-                                    if (!hasPressure)
-                                        temp = new Node();
-                                    temp.beginTimestamp = Utils.getTimestamp();
-                                    temp.x = value;
-                                    break;
-                                } else if (type == 3 && code == 54) {
-                                    // Coordinate Y
-                                    temp.y = value;
-
-                                    if (temp.x != 0 && temp.y != 0
-                                            && temp.beginTimestamp != 0)
-                                        nodes.add(temp);
-                                    hasPressure = false;
-                                    break;
-                                } else if (type == 1 && code == 330
-                                        && value == 0) { // 时间结束
-                                    nodes.get(nodes.size() - 1).endTimestamp = Utils.getTimestamp();
+                                Boolean isEnd = codeHandler.handle(type,code,value);
+                                if (isEnd) {
                                     FLAG_SAVING_SCREEN_EVENT = true; // 让传感器值写入缓冲队列
                                     ScreenEvent screenEvent = new ScreenEvent(
                                             nodes, sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
@@ -177,16 +137,21 @@ public class ScreenHandler {
                                             e.printStackTrace();
                                         }
                                     }
-                                }
                             }
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
                     }
+                }catch(Exception e){
+                    e.printStackTrace();
                 }
             }
-        });
-        b.start();
+        }
+
     }
+
+    );
+    b.start();
+}
+
 
 }

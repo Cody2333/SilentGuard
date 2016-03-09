@@ -85,7 +85,7 @@ void debug(char *szFormat, ...)
 
 
 
-jint Java_com_lowhot_cody_movement_Events_intEnableDebug( JNIEnv* env,jobject thiz, jint enable ) {
+jint Java_com_lowhot_cody_movement_utils_Events_intEnableDebug( JNIEnv* env,jobject thiz, jint enable ) {
 
 	g_debug = enable;
 	return g_debug;
@@ -231,7 +231,7 @@ static int scan_dir(const char *dirname)
     return 0;
 } 
 
-jint Java_com_lowhot_cody_movement_Events_intSendEvent(JNIEnv* env,jobject thiz, jint index, uint16_t type, uint16_t code, int32_t value) {
+jint Java_com_lowhot_cody_movement_utils_Events_intSendEvent(JNIEnv* env,jobject thiz, jint index, uint16_t type, uint16_t code, int32_t value) {
 	if (index >= nDevsCount || pDevs[index].ufds.fd == -1) return -1;
 	int fd = pDevs[index].ufds.fd;
 	debug("SendEvent call (%d,%d,%d,%d)", fd, type, code, value);
@@ -251,7 +251,7 @@ jint Java_com_lowhot_cody_movement_Events_intSendEvent(JNIEnv* env,jobject thiz,
 
 
 
-jint Java_com_lowhot_cody_movement_Events_ScanFiles( JNIEnv* env,jobject thiz ) {
+jint Java_com_lowhot_cody_movement_utils_Events_ScanFiles( JNIEnv* env,jobject thiz ) {
 	int res = scan_dir(device_path);
 	if(res < 0) {
 		debug("scan dir failed for %s:", device_path);
@@ -261,23 +261,23 @@ jint Java_com_lowhot_cody_movement_Events_ScanFiles( JNIEnv* env,jobject thiz ) 
 	return nDevsCount;
 }
 
-jstring Java_com_lowhot_cody_movement_Events_getDevPath( JNIEnv* env,jobject thiz, jint index) {
+jstring Java_com_lowhot_cody_movement_utils_Events_getDevPath( JNIEnv* env,jobject thiz, jint index) {
 	return (*env)->NewStringUTF(env, pDevs[index].device_path);
 }
-jstring Java_com_lowhot_cody_movement_Events_getDevName( JNIEnv* env,jobject thiz, jint index) {
+jstring Java_com_lowhot_cody_movement_utils_Events_getDevName( JNIEnv* env,jobject thiz, jint index) {
 	if (pDevs[index].device_name == NULL) return NULL;
 	else return (*env)->NewStringUTF(env, pDevs[index].device_name);
 }
 
-jint Java_com_lowhot_cody_movement_Events_OpenDev( JNIEnv* env,jobject thiz, jint index ) {
+jint Java_com_lowhot_cody_movement_utils_Events_OpenDev( JNIEnv* env,jobject thiz, jint index ) {
 	return open_device(index);
 }
 
-jint Java_com_lowhot_cody_movement_Events_RemoveDev( JNIEnv* env,jobject thiz, jint index ) {
+jint Java_com_lowhot_cody_movement_utils_Events_RemoveDev( JNIEnv* env,jobject thiz, jint index ) {
 	return remove_device(index);
 }
 
-jint Java_com_lowhot_cody_movement_Events_PollDev( JNIEnv* env,jobject thiz, jint index ) {
+jint Java_com_lowhot_cody_movement_utils_Events_PollDev( JNIEnv* env,jobject thiz, jint index ) {
 	if (index >= nDevsCount || pDevs[index].ufds.fd == -1) return -1;
 	int pollres = poll(ufds, nDevsCount, -1);
 	if(ufds[index].revents) {
@@ -292,14 +292,14 @@ jint Java_com_lowhot_cody_movement_Events_PollDev( JNIEnv* env,jobject thiz, jin
 	return -1;
 }
 
-jint Java_com_lowhot_cody_movement_Events_getType( JNIEnv* env,jobject thiz ) {
+jint Java_com_lowhot_cody_movement_utils_Events_getType( JNIEnv* env,jobject thiz ) {
 	return event.type;
 }
 
-jint Java_com_lowhot_cody_movement_Events_getCode( JNIEnv* env,jobject thiz ) {
+jint Java_com_lowhot_cody_movement_utils_Events_getCode( JNIEnv* env,jobject thiz ) {
 	return event.code;
 }
 
-jint Java_com_lowhot_cody_movement_Events_getValue( JNIEnv* env,jobject thiz ) {
+jint Java_com_lowhot_cody_movement_utils_Events_getValue( JNIEnv* env,jobject thiz ) {
 	return event.value;
 }

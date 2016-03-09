@@ -1,4 +1,4 @@
-package com.lowhot.cody.movement;
+package com.lowhot.cody.movement.utils;
 
 import android.util.Log;
 
@@ -6,8 +6,18 @@ import java.util.ArrayList;
 
 
 public class Events {
+    public  static int EV_KEY = 0x01,
+            EV_REL = 0x02,
+            EV_ABS = 0x03,
+            REL_X = 0x00,
+            REL_Y = 0x01,
+            REL_Z = 0x02,
+            BTN_TOUCH = 0x14a,// 330
 
-    private final static String LT = "Events";
+            ABS_X = 53,
+            ABS_Y = 54;
+
+    private final static String TAG = "Events";
 
     public class InputDevice {
 
@@ -61,13 +71,7 @@ public class Events {
             RemoveDev(m_nId);
         }
 
-        public static final int EV_KEY = 0x01,
-                                EV_REL = 0x02,
-                                EV_ABS = 0x03,
-                                REL_X = 0x00,
-                                REL_Y = 0x01,
-                                REL_Z = 0x02,
-                                BTN_TOUCH = 0x14a;// 330
+
 
         public int SendKey(int key, boolean state) {
             if (state)
@@ -159,7 +163,7 @@ public class Events {
             m_szName = getDevName(m_nId);
             m_bOpen = (res == 0);
             // debug
-            Log.d(LT, "Open:" + m_szPath + " Name:" + m_szName + " Result:" + m_bOpen);
+            Log.d(TAG, "Open:" + m_szPath + " Name:" + m_szName + " Result:" + m_bOpen);
             // done, return
             return m_bOpen;
         }

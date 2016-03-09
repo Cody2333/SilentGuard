@@ -2,7 +2,7 @@ package com.lowhot.cody.movement.model;
 
 import com.lowhot.cody.movement.bean.Accelerator;
 import com.lowhot.cody.movement.bean.Gyroscope;
-import com.lowhot.cody.movement.uitls.Utils;
+import com.lowhot.cody.movement.utils.Utils;
 
 import java.util.concurrent.LinkedBlockingQueue;
 

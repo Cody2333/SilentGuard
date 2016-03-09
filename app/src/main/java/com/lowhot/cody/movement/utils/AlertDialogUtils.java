@@ -1,4 +1,4 @@
-package com.lowhot.cody.movement.uitls;
+package com.lowhot.cody.movement.utils;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 /**
  * Created by cody_local on 2016/3/9.
+ * 用于在service中也能弹出alertdialog
  */
 public class AlertDialogUtils {
     AlertDialog.Builder builder;

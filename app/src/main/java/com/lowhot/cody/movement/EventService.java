@@ -9,22 +9,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 
 import com.lowhot.cody.movement.model.ScreenHandler;
-import com.lowhot.cody.movement.uitls.AlertDialogUtils;
-import com.lowhot.cody.movement.bean.Node;
-import com.lowhot.cody.movement.model.ScreenEvent;
+import com.lowhot.cody.movement.utils.AlertDialogUtils;
 import com.lowhot.cody.movement.model.SensorHandler;
-import com.lowhot.cody.movement.uitls.Utils;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.lowhot.cody.movement.utils.Constant;
 
 @SuppressLint("ShowToast")
 public class EventService extends Service implements SensorEventListener {
@@ -39,9 +29,8 @@ public class EventService extends Service implements SensorEventListener {
     public void onCreate() {
         super.onCreate();
         sensorHandler = new SensorHandler();
-        alertDialogUtils = new AlertDialogUtils(getApplicationContext());
         screenHandler = new ScreenHandler(getApplicationContext(), sensorHandler);
-
+        alertDialogUtils = new AlertDialogUtils(getApplicationContext());
         // 监听键盘
         screenHandler.StartEventMonitor();
         // 监听传感器
@@ -49,10 +38,15 @@ public class EventService extends Service implements SensorEventListener {
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         return super.onStartCommand(intent, flags, startId);
     }
-    
+
 
     public void initSensor() {
         sm = (SensorManager) getSystemService(Context.SENSOR_SERVICE);

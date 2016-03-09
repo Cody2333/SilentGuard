@@ -1,4 +1,4 @@
-package com.lowhot.cody.movement;
+package com.lowhot.cody.movement.utils;
 
 import android.util.Log;
 

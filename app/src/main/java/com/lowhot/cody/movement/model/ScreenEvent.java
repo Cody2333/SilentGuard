@@ -5,6 +5,7 @@ import android.util.Log;
 import com.lowhot.cody.movement.bean.Accelerator;
 import com.lowhot.cody.movement.bean.Gyroscope;
 import com.lowhot.cody.movement.bean.Node;
+import com.lowhot.cody.movement.utils.Utils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,7 +14,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
 
-
+/**
+ *
+ */
 public class ScreenEvent {
     public ArrayList<Node> nodes = new ArrayList<Node>();
     ArrayList<Accelerator> acceleratorQueue = new ArrayList<>();
@@ -121,12 +124,7 @@ public class ScreenEvent {
     public void save(File outFile) throws IOException {
         setLine();
         Log.d("dealedData", line);
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(
-                outFile, true));
-        bufferedWriter.write(line);
-        bufferedWriter.newLine();
-        bufferedWriter.flush();
-        bufferedWriter.close();
+        Utils.writeTxt(outFile,line);
     }
 
     public boolean judge() {

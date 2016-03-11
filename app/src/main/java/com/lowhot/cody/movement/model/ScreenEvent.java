@@ -89,26 +89,9 @@ public class ScreenEvent {
         return Math.sqrt(temp);
     }
 
-    public String formatLine(Boolean isAdmin, double x, double y, double pressure, long time, double accelerator, double gyroscope, String appName) {
-        int isAdminInt = -1;
-        if (isAdmin) {
-            isAdminInt = 1;
-        } else {
-            isAdminInt = -1;
-        }
-        String line = String.valueOf(isAdminInt)
-                + " 0:" + x
-                + " 1:" + y
-                + " 2:" + pressure
-                + " 3:" + time
-                + " 4:" + accelerator
-                + " 5:" + gyroscope
-                + " 6:" + appName;
-        return line;
 
-    }
 
-    public void setLine() {
+    public String setLine() {
         double x = 0, y = 0, pressure = 0;
         for (Node node : nodes) {
             x += node.x;
@@ -118,13 +101,14 @@ public class ScreenEvent {
         x /= nodes.size(); // 平均 x坐标
         y /= nodes.size(); // 平均 y坐标
         pressure /= nodes.size(); // 平均压力
-        line = formatLine(isAdmin, x, y, pressure, getTime(), getAverageAccelerator(), getAverageGyroscope(), appName);
+        line = Utils.formatLine(isAdmin, x, y, pressure, getTime(), getAverageAccelerator(), getAverageGyroscope(), appName);
+        return line;
     }
 
     public void save(File outFile) throws IOException {
-        setLine();
-        Log.d("dealedData", line);
-        Utils.writeTxt(outFile,line);
+        String line = setLine();
+        File file = Utils.createFile(appName);
+        Utils.writeTxt(file,line);
     }
 
     public boolean judge() {

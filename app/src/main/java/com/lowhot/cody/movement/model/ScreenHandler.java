@@ -5,14 +5,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.lowhot.cody.movement.utils.Events;
-import com.lowhot.cody.movement.bean.Node;
 import com.lowhot.cody.movement.utils.Utils;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by cody_local on 2016/3/9.
@@ -20,7 +16,6 @@ import java.util.ArrayList;
  */
 public class ScreenHandler {
     private static final String TAG = "ScreenHandler";
-    private ArrayList<Node> nodes;
     private Events events;
     private volatile boolean FLAG_SAVING_SCREEN_EVENT;
     private Context ctx;
@@ -29,34 +24,14 @@ public class ScreenHandler {
     public ScreenHandler(Context ctx, SensorHandler sensorHandler) {
         this.ctx = ctx;
         this.sensorHandler = sensorHandler;
-        nodes = new ArrayList<>();
         events = new Events();
         FLAG_SAVING_SCREEN_EVENT = false;
-
         //初始化 events
         events.Init();
         Events.intEnableDebug(1);
     }
 
-    public boolean isFLAG_SAVING_SCREEN_EVENT() {
-        return FLAG_SAVING_SCREEN_EVENT;
-    }
 
-    public void setFLAG_SAVING_SCREEN_EVENT(boolean FLAG_SAVING_SCREEN_EVENT) {
-        this.FLAG_SAVING_SCREEN_EVENT = FLAG_SAVING_SCREEN_EVENT;
-    }
-
-    public Events getEvents() {
-        return events;
-    }
-
-    public ArrayList<Node> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(ArrayList<Node> nodes) {
-        this.nodes = nodes;
-    }
 
     public void StartEventMonitor() {
         Toast.makeText(ctx, "serviceStart",
@@ -77,31 +52,11 @@ public class ScreenHandler {
         Thread b = new Thread(new Runnable() {
 
             public void run() {
-                File outFile = new File("/sdcard/eventInject.txt");
-                File originalScreenDataFile = new File(
-                        "/sdcard/eventInjectOrignial.txt");
 
-                if (!outFile.exists()) {
-                    try {
-                        Log.d(TAG, "create file");
-                        outFile.createNewFile();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-                if (!originalScreenDataFile.exists()) {
-                    try {
-                        Log.d(TAG, "create file");
-                        originalScreenDataFile.createNewFile();
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
+                File outFile = Utils.createFile("eventInject");
+                File originalScreenDataFile = Utils.createFile("eventInjectOrignial");
 
-                int type, code, value;
-                CodeHandler codeHandler = new CodeHandler(nodes);
+                CodeHandler codeHandler = new CodeHandler();
                 while (true) {
                     try {
                         for (Events.InputDevice idev : events.m_Devs) {
@@ -109,27 +64,23 @@ public class ScreenHandler {
                             if (idev.getOpen() && (0 == idev.getPollingEvent())) {
 
 
-                                type = idev.getSuccessfulPollingType();
-                                code = idev.getSuccessfulPollingCode();
-                                value = idev.getSuccessfulPollingValue();
+                                int type = idev.getSuccessfulPollingType();
+                                int code = idev.getSuccessfulPollingCode();
+                                int value = idev.getSuccessfulPollingValue();
 
-                                final String line = idev.getName() + ":"
-                                        + type + " "
-                                        + code + " "
-                                        + value
-                                        + " timestamp:" + Utils.getTimestamp()
-                                        + " appName:"
-                                        + Utils.getCurrentActivityName(ctx);
+                                final String line = Utils.formatLineForOriginData(ctx, idev.getName(), type, code, value);
                                 Utils.writeTxt(originalScreenDataFile, line);
 
-                                Boolean isEnd = codeHandler.handle(type,code,value);
+                                //如果触摸事件结束返回true
+                                Boolean isEnd = codeHandler.handle(type, code, value);
+
                                 if (isEnd) {
                                     FLAG_SAVING_SCREEN_EVENT = true; // 让传感器值写入缓冲队列
                                     ScreenEvent screenEvent = new ScreenEvent(
-                                            nodes, sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
+                                            codeHandler.getNodes(), sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
                                             Utils.getCurrentActivityName(ctx));
                                     FLAG_SAVING_SCREEN_EVENT = false; // 将传感器值写入生成队列
-                                    nodes.clear();
+                                    codeHandler.clearNodes();
                                     if (screenEvent.judge()) {
                                         try {
                                             screenEvent.save(outFile); // 保存主人数据到文件
@@ -137,21 +88,28 @@ public class ScreenHandler {
                                             e.printStackTrace();
                                         }
                                     }
+                                }
                             }
-                        }
 
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                }catch(Exception e){
-                    e.printStackTrace();
                 }
             }
+
         }
 
+        );
+        b.start();
     }
 
-    );
-    b.start();
-}
+    public boolean isFLAG_SAVING_SCREEN_EVENT() {
+        return FLAG_SAVING_SCREEN_EVENT;
+    }
 
 
+    public Events getEvents() {
+        return events;
+    }
 }

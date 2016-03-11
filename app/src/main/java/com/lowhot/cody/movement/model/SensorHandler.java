@@ -22,12 +22,12 @@ public class SensorHandler {
 
     public SensorHandler() {
 
-        this.acceleratorQueue = new LinkedBlockingQueue<Accelerator>();
-        this.gyroscopeQueue = new LinkedBlockingQueue<Gyroscope>();
+        this.acceleratorQueue = new LinkedBlockingQueue<>();
+        this.gyroscopeQueue = new LinkedBlockingQueue<>();
 
         // 当屏幕事件保存时，加速器值保存至下面缓冲队列
-        this.acceBuffer = new LinkedBlockingQueue<Accelerator>();
-        this.gyroBuffer = new LinkedBlockingQueue<Gyroscope>();
+        this.acceBuffer = new LinkedBlockingQueue<>();
+        this.gyroBuffer = new LinkedBlockingQueue<>();
     }
 
     public void addGyroscopeData(double x, double y, double z, Boolean isReading) {
@@ -70,15 +70,10 @@ public class SensorHandler {
         return acceleratorQueue;
     }
 
-    public void setAcceleratorQueue(LinkedBlockingQueue<Accelerator> acceleratorQueue) {
-        this.acceleratorQueue = acceleratorQueue;
-    }
 
     public LinkedBlockingQueue<Gyroscope> getGyroscopeQueue() {
         return gyroscopeQueue;
     }
 
-    public void setGyroscopeQueue(LinkedBlockingQueue<Gyroscope> gyroscopeQueue) {
-        this.gyroscopeQueue = gyroscopeQueue;
-    }
+
 }

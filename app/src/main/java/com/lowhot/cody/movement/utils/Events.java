@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 
 public class Events {
+    private final static String TAG = "Events";
+
     public  static int EV_KEY = 0x01,
             EV_REL = 0x02,
             EV_ABS = 0x03,
@@ -15,9 +17,8 @@ public class Events {
             BTN_TOUCH = 0x14a,// 330
 
             ABS_X = 53,
-            ABS_Y = 54;
-
-    private final static String TAG = "Events";
+            ABS_Y = 54,
+            PRESSURE = 58;
 
     public class InputDevice {
 

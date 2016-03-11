@@ -14,7 +14,6 @@ import android.os.IBinder;
 import com.lowhot.cody.movement.model.ScreenHandler;
 import com.lowhot.cody.movement.utils.AlertDialogUtils;
 import com.lowhot.cody.movement.model.SensorHandler;
-import com.lowhot.cody.movement.utils.Constant;
 
 @SuppressLint("ShowToast")
 public class EventService extends Service implements SensorEventListener {

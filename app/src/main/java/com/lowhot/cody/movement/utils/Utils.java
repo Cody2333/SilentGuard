@@ -30,7 +30,7 @@ public class Utils {
     public static String getCurrentActivityName(Context ctx) {
         ActivityManager am = (ActivityManager) ctx.getSystemService(Activity.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        return cn.getClassName();
+        return cn.getPackageName();
     }
 
     public static void writeTxt(File filename,String line) throws IOException{

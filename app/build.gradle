@@ -47,4 +47,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile files('libs/libsvm.jar')
+    compile 'org.greenrobot:eventbus:3.0.0'
+
 }

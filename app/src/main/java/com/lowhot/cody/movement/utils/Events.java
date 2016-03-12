@@ -51,6 +51,9 @@ public class Events {
             return getValue();
         }
 
+        public long getTime() {
+            return getTimestamp();
+        }
         public boolean getOpen() {
             return m_bOpen;
         }
@@ -209,6 +212,7 @@ public class Events {
 
     private native static int getValue();
 
+    private native static long getTimestamp();
     // injector:
     private native static int intSendEvent(int devid, int type, int code, int value);
 

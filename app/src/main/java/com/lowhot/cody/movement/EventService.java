@@ -9,11 +9,16 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
+import android.widget.Toast;
 
 
+import com.lowhot.cody.movement.EventBus.MonitorEvent;
 import com.lowhot.cody.movement.model.ScreenHandler;
 import com.lowhot.cody.movement.utils.AlertDialogUtils;
 import com.lowhot.cody.movement.model.SensorHandler;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 @SuppressLint("ShowToast")
 public class EventService extends Service implements SensorEventListener {
@@ -27,17 +32,30 @@ public class EventService extends Service implements SensorEventListener {
     @Override
     public void onCreate() {
         super.onCreate();
+        EventBus.getDefault().register(this);
+        Toast.makeText(getApplicationContext(), "serviceStart", Toast.LENGTH_SHORT).show();
         sensorHandler = new SensorHandler();
         screenHandler = new ScreenHandler(getApplicationContext(), sensorHandler);
         alertDialogUtils = new AlertDialogUtils(getApplicationContext());
-        // 监听键盘
+        // 打开设备,监听键盘
+        //screenHandler.openDev();
         screenHandler.StartEventMonitor();
         // 监听传感器
         initSensor();
     }
 
+    @Subscribe
+    public void onMessageEvent(MonitorEvent event){
+        if(event.flag ==0){
+            screenHandler.stopEventMonitor();
+        }else{
+            screenHandler.continueMonitor();
+        }
+    }
     @Override
     public void onDestroy() {
+
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 
@@ -63,6 +81,7 @@ public class EventService extends Service implements SensorEventListener {
         switch (event.sensor.getType()) {
             case Sensor.TYPE_ACCELEROMETER:
                 sensorHandler.addAccleratorData(event.values[0], event.values[1], event.values[2], screenHandler.isFLAG_SAVING_SCREEN_EVENT());
+                //Log.e("Sensor:",String.valueOf(event.timestamp));
                 break;
             case Sensor.TYPE_GYROSCOPE:
                 sensorHandler.addGyroscopeData(event.values[0], event.values[1], event.values[2], screenHandler.isFLAG_SAVING_SCREEN_EVENT());
@@ -70,22 +89,18 @@ public class EventService extends Service implements SensorEventListener {
             default:
                 break;
         }
-
     }
 
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
-
     @Override
     public IBinder onBind(Intent intent) {
         // TODO Auto-generated method stub
-        // return myBinder;
         return null;
     }
 
     public boolean onUnbind(Intent intent) {
-
         return super.onUnbind(intent);
     }
 

@@ -20,7 +20,7 @@ public class ScreenHandler {
     private volatile boolean FLAG_SAVING_SCREEN_EVENT;
     private Context ctx;
     private SensorHandler sensorHandler;
-
+    private Boolean isRunning = false;
     public ScreenHandler(Context ctx, SensorHandler sensorHandler) {
         this.ctx = ctx;
         this.sensorHandler = sensorHandler;
@@ -31,8 +31,12 @@ public class ScreenHandler {
         Events.intEnableDebug(1);
     }
 
-
-
+    public void stopEventMonitor(){
+        isRunning = false;
+    }
+    public void continueMonitor(){
+        isRunning = true;
+    }
     public void StartEventMonitor() {
         Toast.makeText(ctx, "serviceStart",
                 Toast.LENGTH_SHORT).show();
@@ -48,16 +52,15 @@ public class ScreenHandler {
                         Toast.LENGTH_SHORT).show();
             }
         }
-
+        isRunning = true ;
         Thread b = new Thread(new Runnable() {
 
             public void run() {
 
-                File outFile = Utils.createFile("eventInject");
                 File originalScreenDataFile = Utils.createFile("eventInjectOrignial");
 
                 CodeHandler codeHandler = new CodeHandler();
-                while (true) {
+                while (isRunning) {
                     try {
                         for (Events.InputDevice idev : events.m_Devs) {
                             // Open more devices to see their messages
@@ -67,7 +70,9 @@ public class ScreenHandler {
                                 int type = idev.getSuccessfulPollingType();
                                 int code = idev.getSuccessfulPollingCode();
                                 int value = idev.getSuccessfulPollingValue();
-
+                                long t = idev.getTime();
+                                //Log.e("screen:", String.valueOf(t));
+                                //Log.e("timestap:",String.valueOf(Utils.getTimestamp()));
                                 final String line = Utils.formatLineForOriginData(ctx, idev.getName(), type, code, value);
                                 Utils.writeTxt(originalScreenDataFile, line);
 
@@ -77,13 +82,12 @@ public class ScreenHandler {
                                 if (isEnd) {
                                     FLAG_SAVING_SCREEN_EVENT = true; // 让传感器值写入缓冲队列
                                     ScreenEvent screenEvent = new ScreenEvent(
-                                            codeHandler.getNodes(), sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
+                                            codeHandler.getNodeList(), sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
                                             Utils.getCurrentActivityName(ctx));
                                     FLAG_SAVING_SCREEN_EVENT = false; // 将传感器值写入生成队列
-                                    codeHandler.clearNodes();
                                     if (screenEvent.judge()) {
                                         try {
-                                            screenEvent.save(outFile); // 保存主人数据到文件
+                                            screenEvent.save(); // 保存主人数据到文件
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }

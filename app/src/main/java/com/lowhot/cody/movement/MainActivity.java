@@ -14,7 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.lowhot.cody.movement.EventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.Events;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class MainActivity extends AppCompatActivity {
     final static String TAG = "MainActivity";
@@ -58,10 +61,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (m_bMonitorOn) {
-                    Toast.makeText(getApplicationContext(), "Event monitor already working. Consider opening more devices to monitor.", Toast.LENGTH_SHORT).show();
+                    EventBus.getDefault().post(new MonitorEvent(1));
                 } else {
                     Intent serviceIntent = new Intent(MainActivity.this, EventService.class);
                     startService(serviceIntent);
+                    m_bMonitorOn = true;
                 }
 
 
@@ -70,9 +74,9 @@ public class MainActivity extends AppCompatActivity {
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EventService.class);
-                StopEventMonitor();
-                stopService(intent);
+                //Intent intent = new Intent(getApplicationContext(), EventService.class);
+                EventBus.getDefault().post(new MonitorEvent(0));
+                //stopService(intent);
             }
         });
     }
@@ -103,12 +107,9 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "App destroyed.");
-        StopEventMonitor();
+        Intent intent = new Intent(getApplicationContext(), EventService.class);
+        stopService(intent);
         events.Release();
-    }
-
-    public void StopEventMonitor() {
-        m_bMonitorOn = false; //stop reading thread
     }
 
 

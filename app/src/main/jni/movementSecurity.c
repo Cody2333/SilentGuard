@@ -303,3 +303,8 @@ jint Java_com_lowhot_cody_movement_utils_Events_getCode( JNIEnv* env,jobject thi
 jint Java_com_lowhot_cody_movement_utils_Events_getValue( JNIEnv* env,jobject thiz ) {
 	return event.value;
 }
+
+jlong Java_com_lowhot_cody_movement_utils_Events_getTimestamp( JNIEnv* env,jobject thiz ) {
+	int64_t second = event.time.tv_sec;
+	return second*1000000+event.time.tv_usec;
+}

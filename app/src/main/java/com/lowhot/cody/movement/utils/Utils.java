@@ -33,7 +33,7 @@ public class Utils {
         return cn.getClassName();
     }
 
-    public static void writeTxt(File filename,String line){
+    public static void writeTxt(File filename,String line) throws IOException{
         try{
             BufferedWriter bufferedWriter = new BufferedWriter(
                     new FileWriter(filename,
@@ -80,6 +80,11 @@ public class Utils {
 
     }
 
+    /**
+     * 创建文件
+     * @param filename
+     * @return
+     */
     public static File createFile(String filename){
         File folder = new File("/sdcard/movement");
         if(!folder.exists()){

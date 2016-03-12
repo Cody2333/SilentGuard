@@ -1,15 +1,11 @@
 package com.lowhot.cody.movement.model;
 
-import android.util.Log;
-
 import com.lowhot.cody.movement.bean.Accelerator;
 import com.lowhot.cody.movement.bean.Gyroscope;
-import com.lowhot.cody.movement.bean.Node;
+import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.utils.Utils;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -18,24 +14,21 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  */
 public class ScreenEvent {
-    public ArrayList<Node> nodes = new ArrayList<Node>();
     ArrayList<Accelerator> acceleratorQueue = new ArrayList<>();
     ArrayList<Gyroscope> gyroscopeQueue = new ArrayList<>();
-
+    private NodeList nodeList;
     public String appName;
-
-    private String line = ""; // 保存的数据
     private Boolean isAdmin = true;
 
-    public ScreenEvent(ArrayList<Node> nodes,
+    public ScreenEvent(NodeList nodeList,
                        LinkedBlockingQueue<Accelerator> acceleratorQueue,
                        LinkedBlockingQueue<Gyroscope> gyroscopeQueue, String appName) {
-        this.nodes.addAll(nodes);
+        this.nodeList = nodeList;
         this.appName = appName;
         // 选取该时间段内的 sensors
 
-        long beginTimestamp = getFlingBeginTimestamp() - 30;
-        long endTimestamp = getFlingEndTimestamp();
+        long beginTimestamp = nodeList.getBeginStamp() - 30;
+        long endTimestamp = nodeList.getEndStamp();
         // add 该时间段内所有的加速器值
 
         Accelerator av;
@@ -61,16 +54,9 @@ public class ScreenEvent {
         }
     }
 
-    public long getFlingBeginTimestamp() {
-        return nodes.get(0).beginTimestamp;
-    }
-
-    public long getFlingEndTimestamp() {
-        return nodes.get(nodes.size() - 1).endTimestamp;
-    }
 
     public long getTime() {
-        return getFlingEndTimestamp() - getFlingBeginTimestamp();
+        return nodeList.getDuringTime();
     }
 
     public double getAverageAccelerator() {
@@ -90,25 +76,17 @@ public class ScreenEvent {
     }
 
 
-
     public String setLine() {
-        double x = 0, y = 0, pressure = 0;
-        for (Node node : nodes) {
-            x += node.x;
-            y += node.y;
-            pressure += node.pressure;
-        }
-        x /= nodes.size(); // 平均 x坐标
-        y /= nodes.size(); // 平均 y坐标
-        pressure /= nodes.size(); // 平均压力
-        line = Utils.formatLine(isAdmin, x, y, pressure, getTime(), getAverageAccelerator(), getAverageGyroscope(), appName);
+
+        String line = Utils.formatLine(isAdmin, nodeList.getAverageX(), nodeList.getAverageY(), nodeList.getAveragePressure(),
+                nodeList.getDuringTime(), getAverageAccelerator(), getAverageGyroscope(), appName);
         return line;
     }
 
-    public void save(File outFile) throws IOException {
+    public void save() throws IOException {
         String line = setLine();
         File file = Utils.createFile(appName);
-        Utils.writeTxt(file,line);
+        Utils.writeTxt(file, line);
     }
 
     public boolean judge() {

@@ -1,24 +1,17 @@
 package com.lowhot.cody.movement.model;
 
-import com.lowhot.cody.movement.bean.Node;
+import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.Utils;
-
-import java.util.ArrayList;
 
 /**
  * Created by cody_local on 2016/3/9.
  */
 public class CodeHandler {
-    private ArrayList<Node> nodes;
-
-    boolean hasPressure;
-    Node temp;
+    NodeList nodeList;
 
     public CodeHandler() {
-        this.nodes = new ArrayList<>();
-        this.hasPressure = false;
-        this.temp = new Node();
+        this.nodeList = new NodeList();
     }
 
     /**
@@ -28,41 +21,32 @@ public class CodeHandler {
      * @return
      */
     public Boolean handle(int type, int code, int value) {
-        if (type == Events.EV_ABS && code == Events.PRESSURE) {
-            //touch begin
-            temp = new Node();
-            hasPressure = true;
-            temp.pressure = value;
+        if (type == Events.EV_KEY && code == Events.BTN_TOUCH && value == 1) {
+            nodeList.setBeginStamp(Utils.getTimestamp());
+        } else if (type == Events.EV_ABS && code == Events.PRESSURE) {
+            nodeList.addPressure(value);
         } else if (type == Events.EV_ABS && code == Events.ABS_X) {
-            // Coordinate X
-            if (!hasPressure)
-                temp = new Node();
-            temp.beginTimestamp = Utils.getTimestamp();
-            temp.x = value;
+            nodeList.addX(value);
         } else if (type == Events.EV_ABS && code == Events.ABS_Y) {
-            // Coordinate Y
-            temp.y = value;
-            if (temp.x != 0 && temp.y != 0 && temp.beginTimestamp != 0) {
-                nodes.add(temp);
+            nodeList.addY(value);
+        } else if (type == Events.EV_KEY && code == Events.BTN_TOUCH && value == 0) {
+            nodeList.setEndStamp(Utils.getTimestamp());
+            if (nodeList.check()){
+                return true;
+
             }
-            hasPressure = false;
-        } else if (type == 1 && code == 330 && value == 0) {
-            if (nodes.size() == 0) {
-                return false;
-            }
-            nodes.get(nodes.size() - 1).endTimestamp = Utils.getTimestamp();
-            return true;
         }
         return false;
 
     }
 
-    public ArrayList<Node> getNodes() {
-        return nodes;
+    public NodeList getNodeList(){
+        return nodeList;
+    }
+
+    public void reset(){
+        nodeList.reset();
     }
 
 
-    public void clearNodes() {
-        this.nodes.clear();
-    }
 }

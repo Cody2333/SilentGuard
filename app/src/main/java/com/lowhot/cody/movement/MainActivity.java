@@ -12,9 +12,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.lowhot.cody.movement.EventBus.MonitorEvent;
+import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.Events;
 
 import org.greenrobot.eventbus.EventBus;

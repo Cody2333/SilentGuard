@@ -12,17 +12,35 @@
     tools:context="com.example.cody.movement.MainActivity"
     android:orientation="vertical"
     tools:showIn="@layout/activity_main">
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
+        android:layout_marginTop="20dp"
+        android:text="@string/chooseType" />
+    <RadioGroup
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/id_rg">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_master"
+            android:id="@+id/id_rb_master"/>
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_guest"
+            android:id="@+id/id_rb_guest"/>
+    </RadioGroup>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/str_btn_start_monitor"
         android:layout_gravity="center"
+        android:layout_marginTop="20dp"
         android:id="@+id/btn_monitor_start" />
 
     <Button

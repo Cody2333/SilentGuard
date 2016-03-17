@@ -16,8 +16,11 @@ import java.io.IOException;
  * 工具函数
  */
 public class Utils {
+    public static String BASE_DIR = "/sdcard/slide";
+
     /**
      * 获取当前时间戳
+     *
      * @return
      */
     public static long getTimestamp() {
@@ -33,8 +36,8 @@ public class Utils {
         return cn.getPackageName();
     }
 
-    public static void writeTxt(File filename,String line) throws IOException{
-        try{
+    public static void writeTxt(File filename, String line) throws IOException {
+        try {
             BufferedWriter bufferedWriter = new BufferedWriter(
                     new FileWriter(filename,
                             true));
@@ -42,7 +45,7 @@ public class Utils {
             bufferedWriter.newLine();
             bufferedWriter.flush();
             bufferedWriter.close();
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -61,13 +64,12 @@ public class Utils {
                 + " 2:" + pressure
                 + " 3:" + time
                 + " 4:" + accelerator
-                + " 5:" + gyroscope
-                + " 6:" + appName;
+                + " 5:" + gyroscope;
         return line;
 
     }
 
-    public static String formatLineForOriginData(Context ctx,String name, int type, int code,int value) {
+    public static String formatLineForOriginData(Context ctx, String name, int type, int code, int value) {
 
         String line = name + ":"
                 + type + " "
@@ -82,16 +84,43 @@ public class Utils {
 
     /**
      * 创建文件
+     *
      * @param filename
      * @return
      */
-    public static File createFile(String filename){
-        File folder = new File("/sdcard/movement");
-        if(!folder.exists()){
+    public static File createFile(String filename) {
+        File folder = new File(BASE_DIR);
+        if (!folder.exists()) {
             folder.mkdir();
         }
 
-        String name = "/sdcard/movement/" + filename + ".txt";
+        String name = BASE_DIR + "/" + filename + ".txt";
+        File outFile = new File(name);
+        if (!outFile.exists()) {
+            try {
+                outFile.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return outFile;
+    }
+
+    /**
+     * 创建文件
+     *
+     * @param filename
+     * @return
+     */
+    public static File createFile(String append_dir,String filename) {
+        String dir = BASE_DIR+append_dir;
+        File folder = new File(dir);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        String name = dir + "/" + filename + ".txt";
         File outFile = new File(name);
         if (!outFile.exists()) {
             try {

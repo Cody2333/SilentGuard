@@ -16,6 +16,7 @@ import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.model.ScreenHandler;
 import com.lowhot.cody.movement.utils.AlertDialogUtils;
 import com.lowhot.cody.movement.model.SensorHandler;
+import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -45,13 +46,19 @@ public class EventService extends Service implements SensorEventListener {
     }
 
     @Subscribe
-    public void onMessageEvent(MonitorEvent event) {
+    public void onMonitorEvent(MonitorEvent event) {
         if (event.flag == 0) {
             screenHandler.stopEventMonitor();
         } else if (event.flag == 1) {
             screenHandler.continueMonitor();
         }
     }
+
+    @Subscribe
+    public void onRadioButtonEvent(RadioButtonEvent event) {
+            screenHandler.setType(event.type);
+    }
+
 
     @Override
     public void onDestroy() {

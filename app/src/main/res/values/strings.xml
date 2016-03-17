@@ -5,4 +5,7 @@
     <string name="str_btn_start_monitor">开始监控</string>
     <string name="str_btn_stop_monitor">停止监控</string>
     <string name="dialog_error_title">错误</string>
+    <string name="str_master">主人</string>
+    <string name="str_guest">客人</string>
+    <string name="chooseType">请选择是主人还是客人</string>
 </resources>

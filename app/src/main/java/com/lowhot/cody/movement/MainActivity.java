@@ -12,9 +12,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.Events;
+import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -28,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public Activity activity;
     private Toolbar toolbar;
     private FloatingActionButton fab;
+    private RadioGroup rg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         activity = this;
         initListener();
+
+        Intent serviceIntent = new Intent(MainActivity.this, EventService.class);
+        startService(serviceIntent);
     }
 
     public void initView() {
@@ -44,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         btnStop = (Button) findViewById(R.id.btn_monitor_stop);
         fab = (FloatingActionButton) findViewById(R.id.fab);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        rg = (RadioGroup) findViewById(R.id.id_rg);
     }
 
     public void initListener() {
@@ -59,23 +67,32 @@ public class MainActivity extends AppCompatActivity {
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (m_bMonitorOn) {
-                    EventBus.getDefault().post(new MonitorEvent(1));
-                } else {
-                    Intent serviceIntent = new Intent(MainActivity.this, EventService.class);
-                    startService(serviceIntent);
-                    m_bMonitorOn = true;
-                }
-
-
+                m_bMonitorOn = true;
+                EventBus.getDefault().post(new MonitorEvent(1));
             }
         });
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent intent = new Intent(getApplicationContext(), EventService.class);
+                m_bMonitorOn = false;
                 EventBus.getDefault().post(new MonitorEvent(0));
-                //stopService(intent);
+            }
+        });
+
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+
+                switch (checkedId) {
+                    case R.id.id_rb_guest:
+                        EventBus.getDefault().post(new RadioButtonEvent("guest"));
+                        break;
+                    case R.id.id_rb_master:
+                        EventBus.getDefault().post(new RadioButtonEvent("master"));
+                        break;
+
+                }
+
             }
         });
     }

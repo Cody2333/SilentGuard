@@ -1,5 +1,7 @@
 package com.lowhot.cody.movement.model;
 
+import android.util.Log;
+
 import com.lowhot.cody.movement.bean.Accelerator;
 import com.lowhot.cody.movement.bean.Gyroscope;
 import com.lowhot.cody.movement.bean.NodeList;
@@ -14,19 +16,21 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  */
 public class ScreenEvent {
+    public static String TAG = "ScreenEvent";
     ArrayList<Accelerator> acceleratorQueue = new ArrayList<>();
     ArrayList<Gyroscope> gyroscopeQueue = new ArrayList<>();
     private NodeList nodeList;
     public String appName;
     private Boolean isAdmin = true;
+    private String dir;
 
     public ScreenEvent(NodeList nodeList,
                        LinkedBlockingQueue<Accelerator> acceleratorQueue,
-                       LinkedBlockingQueue<Gyroscope> gyroscopeQueue, String appName) {
+                       LinkedBlockingQueue<Gyroscope> gyroscopeQueue, String appName, String dir) {
         this.nodeList = nodeList;
         this.appName = appName;
         // 选取该时间段内的 sensors
-
+        this.dir = dir;
         long beginTimestamp = nodeList.getBeginStamp() - 30;
         long endTimestamp = nodeList.getEndStamp();
         // add 该时间段内所有的加速器值
@@ -85,7 +89,9 @@ public class ScreenEvent {
 
     public void save() throws IOException {
         String line = setLine();
-        File file = Utils.createFile(appName);
+        Log.i(TAG, line);
+        Log.i(TAG, dir);
+        File file = Utils.createFile(dir, appName);
         Utils.writeTxt(file, line);
     }
 

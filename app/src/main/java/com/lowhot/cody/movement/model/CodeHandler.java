@@ -31,20 +31,20 @@ public class CodeHandler {
             nodeList.addY(value);
         } else if (type == Events.EV_KEY && code == Events.BTN_TOUCH && value == 0) {
             nodeList.setEndStamp(Utils.getTimestamp());
-            if (nodeList.check()){
-                return true;
-
-            }
+            //if (nodeList.check()) {
+            //    return true;
+            //}
+            return true;
         }
         return false;
 
     }
 
-    public NodeList getNodeList(){
+    public NodeList getNodeList() {
         return nodeList;
     }
 
-    public void reset(){
+    public void reset() {
         nodeList.reset();
     }
 

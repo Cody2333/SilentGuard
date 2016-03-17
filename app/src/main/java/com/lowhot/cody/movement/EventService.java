@@ -45,13 +45,14 @@ public class EventService extends Service implements SensorEventListener {
     }
 
     @Subscribe
-    public void onMessageEvent(MonitorEvent event){
-        if(event.flag ==0){
+    public void onMessageEvent(MonitorEvent event) {
+        if (event.flag == 0) {
             screenHandler.stopEventMonitor();
-        }else{
+        } else if (event.flag == 1) {
             screenHandler.continueMonitor();
         }
     }
+
     @Override
     public void onDestroy() {
 

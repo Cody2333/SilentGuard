@@ -45,7 +45,7 @@ public class ScreenHandler {
         dir = "/" + getType() + "/" + Utils.getTimestamp();
         Toast.makeText(ctx, "service continue,store dir" + dir, Toast.LENGTH_SHORT).show();
         isRunning = true;
-        Log.i(TAG,"service continue");
+        Log.i(TAG, "service continue");
     }
 
     public void StartEventMonitor() {
@@ -86,9 +86,15 @@ public class ScreenHandler {
 
                                     if (isEnd) {
                                         FLAG_SAVING_SCREEN_EVENT = true; // 让传感器值写入缓冲队列
+                                        Boolean isAdmin;
+                                        if(accountType.equals("master")){
+                                            isAdmin = true;
+                                        }else{
+                                            isAdmin = false;
+                                        }
                                         ScreenEvent screenEvent = new ScreenEvent(
                                                 codeHandler.getNodeList(), sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
-                                                Utils.getCurrentActivityName(ctx), dir);
+                                                Utils.getCurrentActivityName(ctx), dir,isAdmin);
                                         FLAG_SAVING_SCREEN_EVENT = false; // 将传感器值写入生成队列
 
                                         if (screenEvent.judge()) {

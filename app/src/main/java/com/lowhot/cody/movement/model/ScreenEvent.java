@@ -26,9 +26,10 @@ public class ScreenEvent {
 
     public ScreenEvent(NodeList nodeList,
                        LinkedBlockingQueue<Accelerator> acceleratorQueue,
-                       LinkedBlockingQueue<Gyroscope> gyroscopeQueue, String appName, String dir) {
+                       LinkedBlockingQueue<Gyroscope> gyroscopeQueue, String appName, String dir,Boolean isAdmin) {
         this.nodeList = nodeList;
         this.appName = appName;
+        this.isAdmin = isAdmin;
         // 选取该时间段内的 sensors
         this.dir = dir;
         long beginTimestamp = nodeList.getBeginStamp() - 30;

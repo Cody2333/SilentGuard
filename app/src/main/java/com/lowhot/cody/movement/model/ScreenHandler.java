@@ -22,7 +22,7 @@ public class ScreenHandler {
     private SensorHandler sensorHandler;
     private Boolean isRunning = false;
     //type ---> "master" or "guest"
-    volatile String accountType = "";
+    volatile String accountType = "master";
     volatile String dir = "";
 
     public ScreenHandler(Context ctx, SensorHandler sensorHandler) {

@@ -1,6 +1,7 @@
 package com.lowhot.cody.movement;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,9 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.lowhot.cody.movement.utils.AlertDialogUtils;
+import com.lowhot.cody.movement.utils.ErrorAlertDialogUtil;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
@@ -32,7 +36,11 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private FloatingActionButton fab;
     private RadioGroup rg;
-
+    private EditText name;
+    private RadioButton rb_master;
+    private RadioButton rb_guest;
+    Boolean isMaster=true;
+    String str_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +60,9 @@ public class MainActivity extends AppCompatActivity {
         fab = (FloatingActionButton) findViewById(R.id.fab);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         rg = (RadioGroup) findViewById(R.id.id_rg);
+        name = (EditText)findViewById(R.id.id_et_name);
+        rb_master=(RadioButton)findViewById(R.id.id_rb_master);
+        rb_guest=(RadioButton)findViewById(R.id.id_rb_guest);
     }
 
     public void initListener() {
@@ -68,7 +79,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 m_bMonitorOn = true;
-                EventBus.getDefault().post(new MonitorEvent(1));
+                str_name = name.getText().toString();
+                Log.e(TAG, str_name);
+                if(str_name.length()==0 && isMaster == false){
+                    ErrorAlertDialogUtil.showErrorDialog(activity, "请输入客人名字",null);
+                }else{
+                    EventBus.getDefault().post(new MonitorEvent(1));
+                }
             }
         });
         btnStop.setOnClickListener(new View.OnClickListener() {
@@ -85,7 +102,18 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (checkedId) {
                     case R.id.id_rb_guest:
-                        EventBus.getDefault().post(new RadioButtonEvent("guest"));
+                        str_name = name.getText().toString();
+                        if (str_name.length() != 0) {
+                            EventBus.getDefault().post(new RadioButtonEvent("guest/" + str_name));
+                        } else {
+                            ErrorAlertDialogUtil.showErrorDialog(activity, "请输入客人名字", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    rb_master.setChecked(true);
+                                }
+                            });
+
+                        }
                         break;
                     case R.id.id_rb_master:
                         EventBus.getDefault().post(new RadioButtonEvent("master"));

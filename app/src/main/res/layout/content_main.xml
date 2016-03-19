@@ -17,6 +17,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="@string/chooseType" />
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="请输入客人名字"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/id_et_name"/>
     <RadioGroup
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
@@ -28,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/str_master"
+            android:checked="true"
             android:id="@+id/id_rb_master"/>
         <RadioButton
             android:layout_width="wrap_content"
@@ -35,6 +42,7 @@
             android:text="@string/str_guest"
             android:id="@+id/id_rb_guest"/>
     </RadioGroup>
+
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -2,7 +2,7 @@ package com.lowhot.cody.movement.model;
 
 import com.lowhot.cody.movement.bean.Accelerator;
 import com.lowhot.cody.movement.bean.Gyroscope;
-import com.lowhot.cody.movement.utils.Utils;
+import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -31,7 +31,7 @@ public class SensorHandler {
     }
 
     public void addGyroscopeData(double x, double y, double z, Boolean isReading) {
-        Gyroscope gyroscope = new Gyroscope(x, y, z, Utils.getTimestamp());
+        Gyroscope gyroscope = new Gyroscope(x, y, z, FileUtils.getTimestamp());
         if (isReading) { // 正在保存 ScreenEvent 事件
             gyroBuffer.offer(gyroscope); // 传感器值写入缓冲队列
         } else {
@@ -49,7 +49,7 @@ public class SensorHandler {
     }
 
     public void addAccleratorData(double x, double y, double z, Boolean isReading) {
-        Accelerator accelerator = new Accelerator(x, y, z, Utils.getTimestamp());
+        Accelerator accelerator = new Accelerator(x, y, z, FileUtils.getTimestamp());
         if (isReading) {
             acceBuffer.offer(accelerator);
         } else {

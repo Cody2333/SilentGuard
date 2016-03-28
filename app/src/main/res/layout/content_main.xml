@@ -52,10 +52,17 @@
         android:id="@+id/btn_monitor_start" />
 
     <Button
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/str_btn_stop_monitor"
+    android:layout_gravity="center"
+    android:id="@+id/btn_monitor_stop" />
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/str_btn_stop_monitor"
+        android:text="@string/str_train"
         android:layout_gravity="center"
-        android:id="@+id/btn_monitor_stop" />
+        android:id="@+id/btn_train" />
 
 </LinearLayout>

@@ -5,7 +5,7 @@ import android.util.Log;
 import com.lowhot.cody.movement.bean.Accelerator;
 import com.lowhot.cody.movement.bean.Gyroscope;
 import com.lowhot.cody.movement.bean.NodeList;
-import com.lowhot.cody.movement.utils.Utils;
+import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -83,7 +83,7 @@ public class ScreenEvent {
 
     public String setLine() {
 
-        String line = Utils.formatLine(isAdmin, nodeList.getAverageX(), nodeList.getAverageY(), nodeList.getAveragePressure(),
+        String line = FileUtils.formatLine(isAdmin, nodeList.getAverageX(), nodeList.getAverageY(), nodeList.getAveragePressure(),
                 nodeList.getDuringTime(), getAverageAccelerator(), getAverageGyroscope(), appName);
         return line;
     }
@@ -92,8 +92,8 @@ public class ScreenEvent {
         String line = setLine();
         Log.i(TAG, line);
         Log.i(TAG, dir);
-        File file = Utils.createFile(dir, appName);
-        Utils.writeTxt(file, line);
+        File file = FileUtils.createFile(dir, appName);
+        FileUtils.writeTxt(file, line);
     }
 
     public boolean judge() {

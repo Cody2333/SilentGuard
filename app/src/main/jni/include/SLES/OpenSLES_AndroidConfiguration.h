@@ -35,11 +35,11 @@ extern "C" {
 /**   generic recording configuration on the platform */
 #define SL_ANDROID_RECORDING_PRESET_GENERIC             ((SLuint32) 0x00000001)
 /**   uses the microphone audio source with the same orientation as the camera
- *     if available, the main device microphone otherwise */
+ *     if available, the train device microphone otherwise */
 #define SL_ANDROID_RECORDING_PRESET_CAMCORDER           ((SLuint32) 0x00000002)
-/**   uses the main microphone tuned for voice recognition */
+/**   uses the train microphone tuned for voice recognition */
 #define SL_ANDROID_RECORDING_PRESET_VOICE_RECOGNITION   ((SLuint32) 0x00000003)
-/**   uses the main microphone tuned for audio communications */
+/**   uses the train microphone tuned for audio communications */
 #define SL_ANDROID_RECORDING_PRESET_VOICE_COMMUNICATION ((SLuint32) 0x00000004)
 
 /*---------------------------------------------------------------------------*/

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
-import android.util.Log;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,8 +14,25 @@ import java.io.IOException;
  * Created by cody_local on 2016/3/9.
  * 工具函数
  */
-public class Utils {
+public class FileUtils {
+    public static Context mContext;
     public static String BASE_DIR = "/sdcard/slide";
+
+    private static void initDirs(String ...strings){
+        for (String s : strings){
+            File f = new File(BASE_DIR+s);
+            if(!f.exists()){
+                f.mkdirs();
+            }
+        }
+    }
+
+    public static void register(Context context) {
+        mContext = context.getApplicationContext();
+        //初始化文件路径
+        initDirs("/master","/guest","/model","/config");
+
+    }
 
     /**
      * 获取当前时间戳
@@ -75,9 +91,9 @@ public class Utils {
                 + type + " "
                 + code + " "
                 + value
-                + " timestamp:" + Utils.getTimestamp()
+                + " timestamp:" + FileUtils.getTimestamp()
                 + " appName:"
-                + Utils.getCurrentActivityName(ctx);
+                + FileUtils.getCurrentActivityName(ctx);
         return line;
 
     }
@@ -89,11 +105,6 @@ public class Utils {
      * @return
      */
     public static File createFile(String filename) {
-        File folder = new File(BASE_DIR);
-        if (!folder.exists()) {
-            folder.mkdir();
-        }
-
         String name = BASE_DIR + "/" + filename + ".txt";
         File outFile = new File(name);
         if (!outFile.exists()) {
@@ -115,11 +126,7 @@ public class Utils {
      */
     public static File createFile(String append_dir,String filename) {
         String dir = BASE_DIR+append_dir;
-        File folder = new File(dir);
-        if (!folder.exists()) {
-            folder.mkdirs();
-        }
-
+        initDirs(append_dir);
         String name = dir + "/" + filename + ".txt";
         File outFile = new File(name);
         if (!outFile.exists()) {

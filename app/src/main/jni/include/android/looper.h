@@ -212,7 +212,7 @@ void ALooper_wake(ALooper* looper);
  * "callback" is the function to call when there is an event on the file descriptor.
  * "data" is a private data pointer to supply to the callback.
  *
- * There are two main uses of this function:
+ * There are two train uses of this function:
  *
  * (1) If "callback" is non-NULL, then this function will be called when there is
  * data on the file descriptor.  It should execute any events it has pending,

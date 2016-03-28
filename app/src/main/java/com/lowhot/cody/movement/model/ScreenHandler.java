@@ -5,7 +5,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.lowhot.cody.movement.utils.Events;
-import com.lowhot.cody.movement.utils.Utils;
+import com.lowhot.cody.movement.utils.FileUtils;
+import com.lowhot.cody.movement.utils.ToastUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -36,14 +37,14 @@ public class ScreenHandler {
     }
 
     public void stopEventMonitor() {
-        Toast.makeText(ctx, "service stop", Toast.LENGTH_SHORT).show();
+        ToastUtils.showShort("service stop");
         Log.i(TAG,"service stop");
         isRunning = false;
     }
 
     public void continueMonitor() {
-        dir = "/" + getType() + "/" + Utils.getTimestamp();
-        Toast.makeText(ctx, "service continue,store dir" + dir, Toast.LENGTH_SHORT).show();
+        dir = "/" + getType() + "/" + FileUtils.getTimestamp();
+        ToastUtils.showShort("service continue,store dir" + dir);
         isRunning = true;
         Log.i(TAG, "service continue");
     }
@@ -54,7 +55,7 @@ public class ScreenHandler {
         for (Events.InputDevice idev : events.m_Devs) {
             if (idev.Open(true)) {
             } else {
-                Toast.makeText(ctx, "Device failed to open. Do you have root?", Toast.LENGTH_SHORT).show();
+                ToastUtils.showShort( "Device failed to open. Do you have root?");
             }
         }
         isRunning = false;
@@ -62,7 +63,7 @@ public class ScreenHandler {
 
             public void run() {
 
-                File originalScreenDataFile = Utils.createFile("eventInjectOrignial");
+                File originalScreenDataFile = FileUtils.createFile("eventInjectOrignial");
                 CodeHandler codeHandler = new CodeHandler();
 
                 while (true) {
@@ -78,8 +79,8 @@ public class ScreenHandler {
                                     int code = idev.getSuccessfulPollingCode();
                                     int value = idev.getSuccessfulPollingValue();
 
-                                    final String line = Utils.formatLineForOriginData(ctx, idev.getName(), type, code, value);
-                                    Utils.writeTxt(originalScreenDataFile, line);
+                                    final String line = FileUtils.formatLineForOriginData(ctx, idev.getName(), type, code, value);
+                                    FileUtils.writeTxt(originalScreenDataFile, line);
 
                                     //如果触摸事件结束返回true
                                     Boolean isEnd = codeHandler.handle(type, code, value);
@@ -94,7 +95,7 @@ public class ScreenHandler {
                                         }
                                         ScreenEvent screenEvent = new ScreenEvent(
                                                 codeHandler.getNodeList(), sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
-                                                Utils.getCurrentActivityName(ctx), dir,isAdmin);
+                                                FileUtils.getCurrentActivityName(ctx), dir,isAdmin);
                                         FLAG_SAVING_SCREEN_EVENT = false; // 将传感器值写入生成队列
 
                                         if (screenEvent.judge()) {

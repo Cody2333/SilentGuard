@@ -53,8 +53,8 @@ typedef struct ANativeActivity {
     JavaVM* vm;
 
     /**
-     * JNI context for the main thread of the app.  Note that this field
-     * can ONLY be used from the main thread of the process; that is, the
+     * JNI context for the train thread of the app.  Note that this field
+     * can ONLY be used from the train thread of the process; that is, the
      * thread that calls into the ANativeActivityCallbacks.
      */
     JNIEnv* env;
@@ -109,7 +109,7 @@ typedef struct ANativeActivity {
 
 /**
  * These are the callbacks the framework makes into a native application.
- * All of these callbacks happen on the main thread of the application.
+ * All of these callbacks happen on the train thread of the application.
  * By default, all callbacks are NULL; set to a pointer to your own function
  * to have it called.
  */
@@ -246,7 +246,7 @@ extern ANativeActivity_createFunc ANativeActivity_onCreate;
 /**
  * Finish the given activity.  Its finish() method will be called, causing it
  * to be stopped and destroyed.  Note that this method can be called from
- * *any* thread; it will send a message to the main thread of the process
+ * *any* thread; it will send a message to the train thread of the process
  * where the Java finish call will take place.
  */
 void ANativeActivity_finish(ANativeActivity* activity);
@@ -254,7 +254,7 @@ void ANativeActivity_finish(ANativeActivity* activity);
 /**
  * Change the window format of the given activity.  Calls getWindow().setFormat()
  * of the given activity.  Note that this method can be called from
- * *any* thread; it will send a message to the main thread of the process
+ * *any* thread; it will send a message to the train thread of the process
  * where the Java finish call will take place.
  */
 void ANativeActivity_setWindowFormat(ANativeActivity* activity, int32_t format);
@@ -262,7 +262,7 @@ void ANativeActivity_setWindowFormat(ANativeActivity* activity, int32_t format);
 /**
  * Change the window flags of the given activity.  Calls getWindow().setFlags()
  * of the given activity.  Note that this method can be called from
- * *any* thread; it will send a message to the main thread of the process
+ * *any* thread; it will send a message to the train thread of the process
  * where the Java finish call will take place.  See window.h for flag constants.
  */
 void ANativeActivity_setWindowFlags(ANativeActivity* activity,
@@ -280,7 +280,7 @@ enum {
 /**
  * Show the IME while in the given activity.  Calls InputMethodManager.showSoftInput()
  * for the given activity.  Note that this method can be called from
- * *any* thread; it will send a message to the main thread of the process
+ * *any* thread; it will send a message to the train thread of the process
  * where the Java finish call will take place.
  */
 void ANativeActivity_showSoftInput(ANativeActivity* activity, uint32_t flags);
@@ -297,7 +297,7 @@ enum {
 /**
  * Hide the IME while in the given activity.  Calls InputMethodManager.hideSoftInput()
  * for the given activity.  Note that this method can be called from
- * *any* thread; it will send a message to the main thread of the process
+ * *any* thread; it will send a message to the train thread of the process
  * where the Java finish call will take place.
  */
 void ANativeActivity_hideSoftInput(ANativeActivity* activity, uint32_t flags);

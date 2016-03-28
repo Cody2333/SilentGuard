@@ -8,4 +8,10 @@
     <string name="str_master">主人</string>
     <string name="str_guest">客人</string>
     <string name="chooseType">请选择是主人还是客人</string>
+    <string name="str_train">训练</string>
+
+    <string name="dialog_message_title">提示</string>
+    <string name="dialog_message_success">成功</string>
+    <string name="dialog_text_wait">请等待</string>
+
 </resources>

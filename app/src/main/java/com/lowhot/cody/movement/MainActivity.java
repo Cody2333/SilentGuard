@@ -3,9 +3,9 @@ package com.lowhot.cody.movement;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -17,13 +17,19 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.lowhot.cody.movement.utils.AlertDialogUtils;
+import com.lowhot.cody.movement.svm.res.Main;
 import com.lowhot.cody.movement.utils.ErrorAlertDialogUtil;
+import com.lowhot.cody.movement.utils.FileUtils;
+import com.lowhot.cody.movement.utils.ProgressDialogUtil;
+import com.lowhot.cody.movement.utils.ToastUtils;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.io.IOException;
+
 
 public class MainActivity extends AppCompatActivity {
     final static String TAG = "MainActivity";
@@ -39,19 +45,26 @@ public class MainActivity extends AppCompatActivity {
     private EditText name;
     private RadioButton rb_master;
     private RadioButton rb_guest;
+    private Button btnTrain;
     Boolean isMaster=true;
     String str_name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initView();
-        setSupportActionBar(toolbar);
         activity = this;
+        init();
+        initView();
         initListener();
-
         Intent serviceIntent = new Intent(MainActivity.this, EventService.class);
         startService(serviceIntent);
+
+
+    }
+
+    private void init() {
+        ToastUtils.register(this);
+        FileUtils.register(this);
     }
 
     public void initView() {
@@ -63,17 +76,10 @@ public class MainActivity extends AppCompatActivity {
         name = (EditText)findViewById(R.id.id_et_name);
         rb_master=(RadioButton)findViewById(R.id.id_rb_master);
         rb_guest=(RadioButton)findViewById(R.id.id_rb_guest);
+        btnTrain=(Button)findViewById(R.id.btn_train);
     }
 
     public void initListener() {
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own function", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +99,16 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 m_bMonitorOn = false;
                 EventBus.getDefault().post(new MonitorEvent(0));
+            }
+        });
+
+        btnTrain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO 训练模型
+                TrainTask task = new TrainTask();
+                task.execute();
+
             }
         });
 
@@ -156,5 +172,31 @@ public class MainActivity extends AppCompatActivity {
         events.Release();
     }
 
+
+    class TrainTask extends AsyncTask{
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            ProgressDialogUtil.progressDialogShow(activity);
+        }
+
+        @Override
+        protected Object doInBackground(Object[] params) {
+            Main m = new Main();
+            try {
+                m.train();
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+            ProgressDialogUtil.progressDialogDismiss();
+        }
+    }
 
 }

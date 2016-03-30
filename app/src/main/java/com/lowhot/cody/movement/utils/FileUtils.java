@@ -5,10 +5,13 @@ import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
 
+import com.lowhot.cody.movement.bean.Config;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.MessageFormat;
 
 /**
  * Created by cody_local on 2016/3/9.
@@ -17,12 +20,27 @@ import java.io.IOException;
 public class FileUtils {
     public static Context mContext;
     public static String BASE_DIR = "/sdcard/slide";
-
-    private static void initDirs(String ...strings){
-        for (String s : strings){
-            File f = new File(BASE_DIR+s);
-            if(!f.exists()){
+    public static String MODEL_DIR = BASE_DIR +"/model";
+    public static String BASE_TRAIN_DIR = BASE_DIR +"/data/master";
+    public static String CONFIG_PATH = BASE_DIR +"/config/app.config.txt";
+    private static void initDirs(String... strings) {
+        for (String s : strings) {
+            File f = new File(BASE_DIR + s);
+            if (!f.exists()) {
                 f.mkdirs();
+            }
+        }
+    }
+
+    private static void initFiles(String... strings) {
+        for (String s : strings) {
+            File f = new File(BASE_DIR + s);
+            if (!f.exists()) {
+                try {
+                    f.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -30,8 +48,8 @@ public class FileUtils {
     public static void register(Context context) {
         mContext = context.getApplicationContext();
         //初始化文件路径
-        initDirs("/master","/guest","/model","/config");
-
+        initDirs("/data/master", "/data/guest", "/model", "/config");
+        initFiles("/config/app.config.txt");
     }
 
     /**
@@ -49,7 +67,7 @@ public class FileUtils {
     public static String getCurrentActivityName(Context ctx) {
         ActivityManager am = (ActivityManager) ctx.getSystemService(Activity.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
-        return cn.getPackageName();
+        return cn.getClassName();
     }
 
     public static void writeTxt(File filename, String line) throws IOException {
@@ -124,8 +142,8 @@ public class FileUtils {
      * @param filename
      * @return
      */
-    public static File createFile(String append_dir,String filename) {
-        String dir = BASE_DIR+append_dir;
+    public static File createFile(String append_dir, String filename) {
+        String dir = BASE_DIR + append_dir;
         initDirs(append_dir);
         String name = dir + "/" + filename + ".txt";
         File outFile = new File(name);
@@ -140,4 +158,16 @@ public class FileUtils {
         return outFile;
     }
 
+    public static void saveConfig(Config config) {
+        File f = new File(BASE_DIR +"/config/app.config.txt");
+        //appName:{0},s:{1},t:{2},g:{3},r:{4},n:{5}
+        String line = "{0},{1},{2},{3},{4},{5}";
+        Object[] array = new Object[]{config.getAppName(),config.getS(),config.getT(),config.getG(),config.getR(),config.getN()};
+        String msg = MessageFormat.format(line,array);
+        try {
+            writeTxt(f,msg);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }

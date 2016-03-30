@@ -91,7 +91,7 @@ public class ScreenEvent {
     public void save() throws IOException {
         String line = setLine();
         Log.i(TAG, line);
-        Log.i(TAG, dir);
+        Log.i(TAG, dir+"/"+appName);
         File file = FileUtils.createFile(dir, appName);
         FileUtils.writeTxt(file, line);
     }

@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.view.WindowManager;
 
 /**
- * Created by cody_local on 2016/3/9.
+ * Created by cody on 2016/3/9.
  * 用于在service中也能弹出alertdialog
  */
 public class AlertDialogUtils {

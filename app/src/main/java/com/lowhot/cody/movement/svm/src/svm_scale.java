@@ -22,7 +22,7 @@ class svm_scale
 	private static void exit_with_help()
 	{
 		System.out.print(
-		 "Usage: svm-scale [options] data_filename\n"
+		 "Usage: svm_main-scale [options] data_filename\n"
 		+"options:\n"
 		+"-l lower : x scaling lower limit (default -1)\n"
 		+"-u upper : x scaling upper limit (default +1)\n"

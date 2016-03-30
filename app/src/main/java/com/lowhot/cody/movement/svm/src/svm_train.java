@@ -61,7 +61,7 @@ class svm_train {
 		double sumv = 0, sumy = 0, sumvv = 0, sumyy = 0, sumvy = 0;
 		double[] target = new double[prob.l];
 
-		svm.svm_cross_validation(prob,param,nr_fold,target);
+		svm.svm_cross_validation(prob, param, nr_fold, target);
 		if(param.svm_type == svm_parameter.EPSILON_SVR ||
 		   param.svm_type == svm_parameter.NU_SVR)
 		{
@@ -95,7 +95,7 @@ class svm_train {
 	{
 		parse_command_line(argv);
 		read_problem();
-		error_msg = svm.svm_check_parameter(prob,param);
+		error_msg = svm.svm_check_parameter(prob, param);
 
 		if(error_msg != null)
 		{
@@ -109,8 +109,8 @@ class svm_train {
 		}
 		else
 		{
-			model = svm.svm_train(prob,param);
-			svm.svm_save_model(model_file_name,model);
+			model = svm.svm_train(prob, param);
+			svm.svm_save_model(model_file_name, model);
 		}
 	}
 

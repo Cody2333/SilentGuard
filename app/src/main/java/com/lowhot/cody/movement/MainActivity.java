@@ -17,7 +17,8 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.lowhot.cody.movement.svm.src.svm;
+import com.lowhot.cody.movement.bean.Config;
+import com.lowhot.cody.movement.svm.src.svm_main;
 import com.lowhot.cody.movement.utils.ErrorAlertDialogUtil;
 import com.lowhot.cody.movement.utils.FileUtils;
 import com.lowhot.cody.movement.utils.ProgressDialogUtil;
@@ -28,7 +29,11 @@ import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -183,9 +188,52 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            svm m = new svm();
+            svm_main m = new svm_main();
             try {
-                m.train();
+                //遍历master文件夹中的数据文件进行训练生成模型
+                File root  = new File(FileUtils.BASE_TRAIN_DIR);
+                File configFile = new File(FileUtils.CONFIG_PATH);
+                File[] files = root.listFiles();
+                for (File f : files){
+                    if(f.isFile()){
+                        //先判断app.config中是否有该appName的条目，如果没有则新建一个默认配置条目。
+                        String name = f.getName();
+                        Config config = null;
+                        Boolean isExisted = false;
+                        InputStreamReader read = new InputStreamReader(
+                                new FileInputStream(configFile)
+                        );
+                        BufferedReader bufferedReader = new BufferedReader(read);
+                        String line = null;
+                        while ((line = bufferedReader.readLine())!=null){
+                            Log.i("File Context",line);
+                            String[] argsList = line.split(",");
+                            Log.i("list",String.valueOf(argsList.length));
+                            if (argsList.length !=6){
+                                Log.e("File Context","argsList not match");
+                                break;
+                            }
+                            if (argsList[0].equals(name)){
+                                isExisted = true;
+                                int s= Integer.parseInt(argsList[1]);
+                                int t= Integer.parseInt(argsList[2]);
+                                double g=Double.parseDouble(argsList[3]);
+                                int r= Integer.parseInt(argsList[4]);
+                                double n=Double.parseDouble(argsList[5]);
+                                config = new Config(name,s,t,g,r,n);
+                                m.train(config);
+                                break;
+                            }
+                        }
+                        read.close();
+                        if(!isExisted){
+                            config = new Config(f.getName());
+                            FileUtils.saveConfig(config);
+                            m.train(config);
+                        }
+
+                    }
+                }
             }catch (IOException e){
                 e.printStackTrace();
             }
@@ -196,6 +244,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             ProgressDialogUtil.progressDialogDismiss();
+            ToastUtils.showShort("训练完成");
         }
     }
 

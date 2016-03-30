@@ -42,8 +42,8 @@ class svm_predict {
 		double error = 0;
 		double sumv = 0, sumy = 0, sumvv = 0, sumyy = 0, sumvy = 0;
 
-		int svm_type=svm.svm_get_svm_type(model);
-		int nr_class=svm.svm_get_nr_class(model);
+		int svm_type= svm.svm_get_svm_type(model);
+		int nr_class= svm.svm_get_nr_class(model);
 		double[] prob_estimates=null;
 
 		if(predict_probability == 1)
@@ -51,12 +51,12 @@ class svm_predict {
 			if(svm_type == svm_parameter.EPSILON_SVR ||
 			   svm_type == svm_parameter.NU_SVR)
 			{
-				svm_predict.info("Prob. model for test data: target value = predicted value + z,\nz: Laplace distribution e^(-|z|/sigma)/(2sigma),sigma="+svm.svm_get_svr_probability(model)+"\n");
+				svm_predict.info("Prob. model for test data: target value = predicted value + z,\nz: Laplace distribution e^(-|z|/sigma)/(2sigma),sigma="+ svm.svm_get_svr_probability(model)+"\n");
 			}
 			else
 			{
 				int[] labels=new int[nr_class];
-				svm.svm_get_labels(model,labels);
+				svm.svm_get_labels(model, labels);
 				prob_estimates = new double[nr_class];
 				output.writeBytes("labels");
 				for(int j=0;j<nr_class;j++)
@@ -84,7 +84,7 @@ class svm_predict {
 			double v;
 			if (predict_probability==1 && (svm_type==svm_parameter.C_SVC || svm_type==svm_parameter.NU_SVC))
 			{
-				v = svm.svm_predict_probability(model,x,prob_estimates);
+				v = svm.svm_predict_probability(model, x, prob_estimates);
 				output.writeBytes(v+" ");
 				for(int j=0;j<nr_class;j++)
 					output.writeBytes(prob_estimates[j]+" ");
@@ -92,7 +92,7 @@ class svm_predict {
 			}
 			else
 			{
-				v = svm.svm_predict(model,x);
+				v = svm.svm_predict(model, x);
 				output.writeBytes(v+"\n");
 			}
 
@@ -164,7 +164,7 @@ class svm_predict {
 		{
 			BufferedReader input = new BufferedReader(new FileReader(argv[i]));
 			DataOutputStream output = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(argv[i+2])));
-			svm_model model = svm.svm_load_model(argv[i+1]);
+			svm_model model = svm.svm_load_model(argv[i + 1]);
 			if (model == null)
 			{
 				System.err.print("can't open model file "+argv[i+1]+"\n");

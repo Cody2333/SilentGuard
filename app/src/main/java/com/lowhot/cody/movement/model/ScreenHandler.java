@@ -43,7 +43,8 @@ public class ScreenHandler {
     }
 
     public void continueMonitor() {
-        dir = "/" + getType() + "/" + FileUtils.getTimestamp();
+        //dir = "/data/" + getType() + "/" + FileUtils.getTimestamp();
+        dir = "/data/" + getType();
         ToastUtils.showShort("service continue,store dir" + dir);
         isRunning = true;
         Log.i(TAG, "service continue");

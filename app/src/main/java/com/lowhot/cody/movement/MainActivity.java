@@ -17,7 +17,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
-import com.lowhot.cody.movement.svm.res.Main;
+import com.lowhot.cody.movement.svm.src.svm;
 import com.lowhot.cody.movement.utils.ErrorAlertDialogUtil;
 import com.lowhot.cody.movement.utils.FileUtils;
 import com.lowhot.cody.movement.utils.ProgressDialogUtil;
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Object doInBackground(Object[] params) {
-            Main m = new Main();
+            svm m = new svm();
             try {
                 m.train();
             }catch (IOException e){

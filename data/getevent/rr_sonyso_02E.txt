@@ -1,0 +1,39 @@
+apds9702:4 3 255 timestamp:92078863922 appName:eu.chainfire.supersu.PromptActivity
+apds9702:0 0 0 timestamp:92078863927 appName:eu.chainfire.supersu.PromptActivity
+//点击begin#
+clearpad:3 57 12 timestamp:92078867316 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 54 298 timestamp:92078867330 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 58 48 timestamp:92078867343 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 49 1 timestamp:92078867358 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 52 1 timestamp:92078867371 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:0 0 0 timestamp:92078867383 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 57 -1 timestamp:92078867398 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:0 0 0 timestamp:92078867409 appName:net.highcold.android.movementsecurity.MainActivity
+//点击end#
+clearpad:3 57 13 timestamp:92078869567 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 54 791 timestamp:92078869577 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 58 54 timestamp:92078869582 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 48 3 timestamp:92078869588 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:0 0 0 timestamp:92078869592 appName:net.highcold.android.movementsecurity.MainActivity
+//滑动begin#
+//node1:
+clearpad:3 57 27 timestamp:92078881123 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 54 811 timestamp:92078881127 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 58 53 timestamp:92078881129 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 48 2 timestamp:92078881181 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 49 1 timestamp:92078881187 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:0 0 0 timestamp:92078881192 appName:net.highcold.android.movementsecurity.MainActivity
+//node2
+clearpad:3 57 41 timestamp:92078892452 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 54 744 timestamp:92078892455 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 58 54 timestamp:92078892456 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 49 3 timestamp:92078892458 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 52 0 timestamp:92078892459 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:0 0 0 timestamp:92078892461 appName:net.highcold.android.movementsecurity.MainActivity
+//node3
+clearpad:3 57 44 timestamp:92078900225 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 54 622 timestamp:92078900229 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 58 51 timestamp:92078900231 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:3 48 3 timestamp:92078900233 appName:net.highcold.android.movementsecurity.MainActivity
+clearpad:0 0 0 timestamp:92078900235 appName:net.highcold.android.movementsecurity.MainActivity
+//滑动end

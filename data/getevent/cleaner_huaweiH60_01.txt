@@ -1,0 +1,83 @@
+//点击begin
+huawei,touchscreen:3 58 74 timestamp:1456837266564 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 54 982 timestamp:1456837266567 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 57 0 timestamp:1456837266569 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837266571 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 1 timestamp:1456837266572 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837266573 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837266614 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 0 timestamp:1456837266616 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837266618 appName:net.highcold.android.movementsecurity.MainActivity
+//点击end
+
+//点击 begin
+huawei,touchscreen:3 58 74 timestamp:1456837291995 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 54 921 timestamp:1456837291998 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 57 0 timestamp:1456837292001 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837292003 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 1 timestamp:1456837292005 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837292007 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837292062 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 0 timestamp:1456837292065 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837292067 appName:net.highcold.android.movementsecurity.MainActivity
+//点击 end
+
+huawei,touchscreen:3 58 73 timestamp:1456837295500 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 54 866 timestamp:1456837295502 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 57 0 timestamp:1456837295503 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837295504 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 1 timestamp:1456837295505 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837295505 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837295550 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 0 timestamp:1456837295551 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837295552 appName:net.highcold.android.movementsecurity.MainActivity
+
+
+huawei,touchscreen:3 58 67 timestamp:1456837300313 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 53 600 timestamp:1456837300316 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 54 1088 timestamp:1456837300317 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 57 0 timestamp:1456837300319 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837300339 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 1 timestamp:1456837300341 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837300341 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837300371 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 0 timestamp:1456837300372 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837300374 appName:net.highcold.android.movementsecurity.MainActivity
+
+//奇怪的代码 碰到此情形应忽略它们
+huawei,touchscreen:0 2 0 timestamp:1456837323959 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837323966 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837324111 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837324122 appName:net.highcold.android.movementsecurity.MainActivity
+
+//滑动 begin
+//node 1
+huawei,touchscreen:3 58 58 timestamp:1456837324513 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 53 115 timestamp:1456837324520 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 54 816 timestamp:1456837324527 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 57 0 timestamp:1456837324530 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837324532 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 1 timestamp:1456837324534 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837324535 appName:net.highcold.android.movementsecurity.MainActivity
+//node 2
+huawei,touchscreen:3 58 61 timestamp:1456837324537 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 53 121 timestamp:1456837324538 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 54 815 timestamp:1456837324540 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 57 0 timestamp:1456837324541 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837324542 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837324545 appName:net.highcold.android.movementsecurity.MainActivity
+//node 3
+huawei,touchscreen:3 58 63 timestamp:1456837324547 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 53 144 timestamp:1456837324551 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 54 814 timestamp:1456837324552 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:3 57 0 timestamp:1456837324560 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 2 0 timestamp:1456837324568 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837324572 appName:net.highcold.android.movementsecurity.MainActivity
+
+...
+
+huawei,touchscreen:0 2 0 timestamp:1456837324755 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:1 330 0 timestamp:1456837324757 appName:net.highcold.android.movementsecurity.MainActivity
+huawei,touchscreen:0 0 0 timestamp:1456837324765 appName:net.highcold.android.movementsecurity.MainActivity
+//滑动end
+

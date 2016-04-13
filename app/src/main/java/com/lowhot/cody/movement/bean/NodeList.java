@@ -1,6 +1,6 @@
 package com.lowhot.cody.movement.bean;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cody_local on 2016/3/11.
@@ -9,31 +9,24 @@ public class NodeList {
     //保存一次触摸事件的x,y,pressure 等属性
     private long beginStamp;
     private long endStamp;
-    private ArrayList<Integer> xList;
-    private ArrayList<Integer> yList;
-    private ArrayList<Integer> pressureList;
-
+    private MyPointList myPoints;
     public NodeList() {
         this.beginStamp = 0;
         this.endStamp = 0;
-        this.xList = new ArrayList<>();
-        this.yList = new ArrayList<>();
-        this.pressureList = new ArrayList<>();
+        myPoints = new MyPointList();
     }
 
     public void addX(int x){
-        xList.add(x);
+        myPoints.addX(x);
     }
     public void addY(int y ){
-        yList.add(y);
+        myPoints.addY(y);
     }
     public void addPressure(int pressure){
-        pressureList.add(pressure);
+        myPoints.addPressure(pressure);
     }
     public void reset(){
-        xList.clear();
-        yList.clear();
-        pressureList.clear();
+        myPoints.reset();
         this.beginStamp = 0;
         this.endStamp = 0;
     }
@@ -44,12 +37,6 @@ public class NodeList {
 
     public void setEndStamp(long endStamp) {
         this.endStamp = endStamp;
-    }
-    public Boolean check(){
-        if (xList.size() == yList.size() && xList.size() == pressureList.size() && xList.size()!=0){
-            return true;
-        }
-        return false;
     }
 
     public long getBeginStamp() {
@@ -63,19 +50,20 @@ public class NodeList {
     public long getDuringTime(){
         return endStamp-beginStamp;
     }
-    public ArrayList<Integer> getxList() {
-        return xList;
+    public List<Integer> getxList() {
+        return myPoints.getxList();
     }
 
-    public ArrayList<Integer> getyList() {
-        return yList;
+    public List<Integer> getyList() {
+        return myPoints.getyList();
     }
 
-    public ArrayList<Integer> getPressureList() {
-        return pressureList;
+    public List<Integer> getPressureList() {
+        return myPoints.getpList();
     }
 
     public double getAverageX() {
+        List<Integer> xList = getxList();
         Integer sumX = 0 ;
         for(Integer x : xList){
             sumX =sumX+ x;
@@ -85,6 +73,7 @@ public class NodeList {
     }
 
     public double getAverageY() {
+        List<Integer> yList = getyList();
         Integer sumY = 0 ;
         for(Integer y : yList){
             sumY =sumY+ y;
@@ -94,6 +83,7 @@ public class NodeList {
     }
 
     public double getAveragePressure() {
+        List<Integer> pressureList = getPressureList();
         Integer sumPressure = 0 ;
         for(Integer p : pressureList){
             sumPressure =sumPressure+ p;

@@ -1,7 +1,5 @@
 package com.lowhot.cody.movement.bean;
 
-import java.util.List;
-
 /**
  * Created by cody_local on 2016/3/11.
  */
@@ -10,22 +8,27 @@ public class NodeList {
     private long beginStamp;
     private long endStamp;
     private MyPointList myPoints;
+
     public NodeList() {
         this.beginStamp = 0;
         this.endStamp = 0;
         myPoints = new MyPointList();
     }
 
-    public void addX(int x){
+
+    public void addX(int x) {
         myPoints.addX(x);
     }
-    public void addY(int y ){
+
+    public void addY(int y) {
         myPoints.addY(y);
     }
-    public void addPressure(int pressure){
+
+    public void addPressure(int pressure) {
         myPoints.addPressure(pressure);
     }
-    public void reset(){
+
+    public void reset() {
         myPoints.reset();
         this.beginStamp = 0;
         this.endStamp = 0;
@@ -47,52 +50,23 @@ public class NodeList {
         return endStamp;
     }
 
-    public long getDuringTime(){
-        return endStamp-beginStamp;
-    }
-    public List<Integer> getxList() {
-        return myPoints.getxList();
-    }
-
-    public List<Integer> getyList() {
-        return myPoints.getyList();
-    }
-
-    public List<Integer> getPressureList() {
-        return myPoints.getpList();
+    public long getDuringTime() {
+        return endStamp - beginStamp;
     }
 
     public double getAverageX() {
-        List<Integer> xList = getxList();
-        Integer sumX = 0 ;
-        for(Integer x : xList){
-            sumX =sumX+ x;
-        }
-        int averageX = sumX/xList.size();
-        return averageX;
+        return myPoints.getAverageX();
     }
 
     public double getAverageY() {
-        List<Integer> yList = getyList();
-        Integer sumY = 0 ;
-        for(Integer y : yList){
-            sumY =sumY+ y;
-        }
-        int averageY = sumY/yList.size();
-        return averageY;
+        return myPoints.getAverageY();
     }
 
     public double getAveragePressure() {
-        List<Integer> pressureList = getPressureList();
-        Integer sumPressure = 0 ;
-        for(Integer p : pressureList){
-            sumPressure =sumPressure+ p;
-        }
-        int ave = sumPressure/pressureList.size();
-        return ave;
+        return myPoints.getAveragePressure();
     }
-    
-    public int getlength(){
-        return getxList().size();
+
+    public int getlength() {
+        return myPoints.getLength();
     }
 }

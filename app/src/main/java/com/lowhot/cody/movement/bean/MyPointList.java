@@ -48,6 +48,34 @@ public class MyPointList {
         }
         return xList;
     }
+    public int getAverageX(){
+        List<Integer> xList = getxList();
+        Integer sumX = 0 ;
+        for(Integer x : xList){
+            sumX =sumX+ x;
+        }
+        int averageX = sumX/xList.size();
+        return averageX;
+    }
+    public double getAverageY() {
+        List<Integer> yList = getyList();
+        Integer sumY = 0 ;
+        for(Integer y : yList){
+            sumY =sumY+ y;
+        }
+        int averageY = sumY/yList.size();
+        return averageY;
+    }
+
+    public double getAveragePressure() {
+        List<Integer> pressureList = getpList();
+        Integer sumPressure = 0 ;
+        for(Integer p : pressureList){
+            sumPressure =sumPressure+ p;
+        }
+        int ave = sumPressure/pressureList.size();
+        return ave;
+    }
     public List<Integer> getyList(){
         List<Integer> yList = new ArrayList<>();
         for (MyPoint point : myPoints){
@@ -69,5 +97,8 @@ public class MyPointList {
     public void reset(){
         myPoints.clear();
         temp.reset();
+    }
+    public int getLength(){
+        return myPoints.size();
     }
 }

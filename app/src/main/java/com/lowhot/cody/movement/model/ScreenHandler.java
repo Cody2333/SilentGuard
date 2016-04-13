@@ -2,7 +2,6 @@ package com.lowhot.cody.movement.model;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
@@ -72,10 +71,7 @@ public class ScreenHandler {
                     } else {
                         try {
                             for (Events.InputDevice idev : events.m_Devs) {
-                                // Open more devices to see their messages
                                 if (idev.getOpen() && (0 == idev.getPollingEvent())) {
-
-
                                     int type = idev.getSuccessfulPollingType();
                                     int code = idev.getSuccessfulPollingCode();
                                     int value = idev.getSuccessfulPollingValue();

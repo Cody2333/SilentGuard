@@ -1,7 +1,6 @@
 package com.lowhot.cody.movement.bean;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by cody_local on 2016/3/11.
@@ -101,5 +100,9 @@ public class NodeList {
         }
         int ave = sumPressure/pressureList.size();
         return ave;
+    }
+    
+    public int getlength(){
+        return getxList().size();
     }
 }

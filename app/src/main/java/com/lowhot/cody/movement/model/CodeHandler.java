@@ -1,5 +1,7 @@
 package com.lowhot.cody.movement.model;
 
+import android.util.Log;
+
 import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
@@ -9,7 +11,7 @@ import com.lowhot.cody.movement.utils.FileUtils;
  */
 public class CodeHandler {
     NodeList nodeList;
-
+    public static final String TAG ="CodeHandler";
     public CodeHandler() {
         this.nodeList = new NodeList();
     }
@@ -20,7 +22,14 @@ public class CodeHandler {
      *
      * @return
      */
+
+    public static int CLICK = 10;
+    public static int SLIDING = 11;
+    public static int UNKNOW = 12;
+
+    int style;
     public Boolean handle(int type, int code, int value) {
+
         if (type == Events.EV_KEY && code == Events.BTN_TOUCH && value == 1) {
             nodeList.setBeginStamp(FileUtils.getTimestamp());
         } else if (type == Events.EV_ABS && code == Events.PRESSURE) {
@@ -31,15 +40,23 @@ public class CodeHandler {
             nodeList.addY(value);
         } else if (type == Events.EV_KEY && code == Events.BTN_TOUCH && value == 0) {
             nodeList.setEndStamp(FileUtils.getTimestamp());
-            //if (nodeList.check()) {
-            //    return true;
-            //}
+            if(getLength()<=0){
+                setUNKNOW();
+            } else if (getLength()<=2 && getLength()>0){
+                setCLICK();
+            }else if(getLength()>2){
+                setSLIDING();
+            }
+            Log.i(TAG,String.valueOf(style));
             return true;
         }
         return false;
 
     }
 
+    public int getLength(){
+        return nodeList.getlength();
+    }
     public NodeList getNodeList() {
         return nodeList;
     }
@@ -48,5 +65,18 @@ public class CodeHandler {
         nodeList.reset();
     }
 
+    public void setCLICK(){
+        style = CLICK;
+    }
+    public void setSLIDING(){
+        style = SLIDING;
+    }
+    public void setUNKNOW(){
+        style = UNKNOW;
+    }
+
+    public int getInputStyle(){
+        return style;
+    }
 
 }

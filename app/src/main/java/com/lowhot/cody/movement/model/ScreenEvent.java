@@ -19,6 +19,7 @@ public class ScreenEvent {
     public static String TAG = "ScreenEvent";
     ArrayList<Accelerator> acceleratorQueue = new ArrayList<>();
     ArrayList<Gyroscope> gyroscopeQueue = new ArrayList<>();
+    //nodeList 保存了这次触摸事件的所有x,y,pressure等的信息列表
     private NodeList nodeList;
     public String appName;
     private Boolean isAdmin = true;
@@ -97,7 +98,7 @@ public class ScreenEvent {
     }
 
     public boolean judge() {
-        //TODO
+        ////TODO
         return true;
     }
 

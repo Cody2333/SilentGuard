@@ -63,6 +63,7 @@ public class CodeHandler {
 
     public void reset() {
         nodeList.reset();
+        style=12;
     }
 
     public void setCLICK(){

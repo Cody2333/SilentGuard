@@ -20,6 +20,7 @@ public class MyPointList {
         }
         if(isComplete()){
             myPoints.add(temp);
+            temp=new MyPoint();
         }
     }
     public void addY(int y){
@@ -28,6 +29,7 @@ public class MyPointList {
         }
         if(isComplete()){
             myPoints.add(temp);
+            temp=new MyPoint();
         }
     }
     public void addPressure(int p ){
@@ -36,6 +38,7 @@ public class MyPointList {
         }
         if(isComplete()){
             myPoints.add(temp);
+            temp=new MyPoint();
         }
     }
     public List<Integer> getxList(){

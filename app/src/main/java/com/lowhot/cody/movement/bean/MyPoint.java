@@ -32,7 +32,13 @@ public class MyPoint {
             return false;
         }
     }
-
+    public Boolean isNew() {
+        if (x == -1 && y == -1 && pressure == -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     public int getX() {
         return x;
     }

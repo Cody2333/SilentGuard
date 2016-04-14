@@ -38,7 +38,7 @@ public class SensorHandler {
             try {
                 if (!gyroBuffer.isEmpty()) { // 缓冲队列不为空
                     gyroscopeQueue.addAll(gyroBuffer); // 添加到生成队列
-                    gyroBuffer.clear(); // 情况缓冲队列
+                    gyroBuffer.clear(); // 清空缓冲队列
                 }
                 gyroscopeQueue.put(gyroscope); // 将传感器值写入生成队列
             } catch (InterruptedException e1) {

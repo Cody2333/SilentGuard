@@ -1,5 +1,7 @@
 package com.lowhot.cody.movement.bean;
 
+import java.util.List;
+
 /**
  * Created by cody_local on 2016/3/11.
  */
@@ -7,29 +9,29 @@ public class NodeList {
     //保存一次触摸事件的x,y,pressure 等属性
     private long beginStamp;
     private long endStamp;
-    private MyPointList myPoints;
+    private MyPointList myPointList;
 
     public NodeList() {
         this.beginStamp = 0;
         this.endStamp = 0;
-        myPoints = new MyPointList();
+        myPointList = new MyPointList();
     }
 
 
     public void addX(int x) {
-        myPoints.addX(x);
+        myPointList.addX(x);
     }
 
     public void addY(int y) {
-        myPoints.addY(y);
+        myPointList.addY(y);
     }
 
     public void addPressure(int pressure) {
-        myPoints.addPressure(pressure);
+        myPointList.addPressure(pressure);
     }
 
     public void reset() {
-        myPoints.reset();
+        myPointList.reset();
         this.beginStamp = 0;
         this.endStamp = 0;
     }
@@ -55,18 +57,30 @@ public class NodeList {
     }
 
     public double getAverageX() {
-        return myPoints.getAverageX();
+        return myPointList.getAverageX();
     }
 
     public double getAverageY() {
-        return myPoints.getAverageY();
+        return myPointList.getAverageY();
     }
 
     public double getAveragePressure() {
-        return myPoints.getAveragePressure();
+        return myPointList.getAveragePressure();
+    }
+
+    public List<Integer> getxList(){
+        return myPointList.getxList();
+    }
+
+    public List<Integer> getyList(){
+        return myPointList.getyList();
+    }
+    public  List<MyPoint> getMyPoints(){
+        return myPointList.getMyPoints();
     }
 
     public int getlength() {
-        return myPoints.getLength();
+        return myPointList.getLength();
     }
+
 }

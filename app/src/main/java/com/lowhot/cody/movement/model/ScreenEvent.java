@@ -89,12 +89,20 @@ public class ScreenEvent {
         return line;
     }
 
+    public void saveTrack() throws IOException{
+        String trackDir = dir + "/" + "trace";
+        File f = FileUtils.createFile(trackDir,appName);
+        String line = FileUtils.formatTrackData(nodeList.getMyPoints());
+        FileUtils.writeTxt(f,line);
+    }
+
     public void save() throws IOException {
         String line = setLine();
         Log.i(TAG, line);
         Log.i(TAG, dir+"/"+appName);
         File file = FileUtils.createFile(dir, appName);
         FileUtils.writeTxt(file, line);
+        saveTrack();
     }
 
     public boolean judge() {

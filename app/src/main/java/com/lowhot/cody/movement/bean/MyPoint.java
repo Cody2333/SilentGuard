@@ -9,9 +9,7 @@ public class MyPoint {
     private int x = -1;
     private int y = -1;
     private int pressure = -1;
-    private long xStamp = -1;
-    private long yStamp = -1;
-    private long pStamp = -1;
+    private long timestamp = -1;
 
     public MyPoint() {
     }
@@ -20,18 +18,19 @@ public class MyPoint {
         this.x = x;
         this.y = y;
         this.pressure = pressure;
-        this.xStamp = FileUtils.getTimestamp();
-        this.yStamp = FileUtils.getTimestamp();
-        this.pStamp = FileUtils.getTimestamp();
     }
 
     public Boolean isCompleted() {
         if (x != -1 && y != -1 && pressure != -1) {
+            if (timestamp == -1) {
+                timestamp = FileUtils.getTimestamp();
+            }
             return true;
         } else {
             return false;
         }
     }
+
     public Boolean isNew() {
         if (x == -1 && y == -1 && pressure == -1) {
             return true;
@@ -39,13 +38,13 @@ public class MyPoint {
             return false;
         }
     }
+
     public int getX() {
         return x;
     }
 
     public void setX(Integer x) {
         this.x = x;
-        this.xStamp = FileUtils.getTimestamp();
     }
 
     public int getY() {
@@ -54,7 +53,6 @@ public class MyPoint {
 
     public void setY(Integer y) {
         this.y = y;
-        this.yStamp = FileUtils.getTimestamp();
     }
 
     public int getPressure() {
@@ -63,16 +61,15 @@ public class MyPoint {
 
     public void setPressure(Integer pressure) {
         this.pressure = pressure;
-        this.pStamp = FileUtils.getTimestamp();
     }
 
     public void reset() {
         x = -1;
         y = -1;
         pressure = -1;
-        xStamp = -1;
-        yStamp = -1;
-        pStamp = -1;
+        timestamp = -1;
+
     }
+
 
 }

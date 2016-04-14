@@ -6,12 +6,15 @@ import android.content.ComponentName;
 import android.content.Context;
 
 import com.lowhot.cody.movement.bean.Config;
+import com.lowhot.cody.movement.bean.MyPoint;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by cody_local on 2016/3/9.
@@ -103,6 +106,43 @@ public class FileUtils {
 
     }
 
+    /**
+     * 控制trace输出格式
+     * @param myPoints
+     * @return
+     */
+    public static String formatTrackData(List<MyPoint> myPoints) {
+        String line = "";
+
+        for (MyPoint point : myPoints){
+            line  = line + point.getX() +" ";
+        }
+        line  = line + "\r\n";
+        for (MyPoint point : myPoints){
+            line = line + point.getY() + " ";
+        }
+        line  = line + "\r\n";
+        return line;
+
+    }
+
+    /**
+     * 获取两条trace的相对轨迹
+     * @param list1
+     * @param list2
+     * @return
+     */
+    public static List<MyPoint> getRelativeTrack(List<MyPoint> list1,List<MyPoint> list2){
+        List<MyPoint> result = new ArrayList<>();
+        int length = list1.size()>list2.size()? list2.size():list1.size();
+        for (int i =0 ;i<length;i++){
+            MyPoint point = new MyPoint();
+            point.setX(list1.get(i).getX()-list2.get(i).getX());
+            point.setY(list1.get(i).getY()-list2.get(i).getY());
+            result.add(point);
+        }
+        return result;
+    }
     public static String formatLineForOriginData(Context ctx, String name, int type, int code, int value) {
 
         String line = name + ":"

@@ -1,5 +1,8 @@
 package com.lowhot.cody.movement.bean;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +10,9 @@ import java.util.List;
  * Created by cody_local on 2016/4/13.
  */
 public class MyPointList {
+
     private List<MyPoint> myPoints;
+    @JsonIgnore
     private MyPoint temp;
 
     public MyPointList() {
@@ -15,6 +20,7 @@ public class MyPointList {
         temp = new MyPoint();
     }
 
+    @JsonIgnore
     public void addX(int x) {
         if (temp.getX() == -1) {
             temp.setX(x);
@@ -25,6 +31,7 @@ public class MyPointList {
         }
     }
 
+    @JsonIgnore
     public void addY(int y) {
         if (temp.getY() == -1) {
             temp.setY(y);
@@ -35,6 +42,7 @@ public class MyPointList {
         }
     }
 
+    @JsonIgnore
     public void addPressure(int p) {
         if (temp.getPressure() == -1) {
             temp.setPressure(p);
@@ -45,6 +53,7 @@ public class MyPointList {
         }
     }
 
+    @JsonIgnore
     public List<Integer> getxList() {
         List<Integer> xList = new ArrayList<>();
         for (MyPoint point : myPoints) {
@@ -53,10 +62,7 @@ public class MyPointList {
         return xList;
     }
 
-    public List<MyPoint> getMyPoints(){
-        return myPoints;
-    }
-
+    @JsonIgnore
     public int getAverageX() {
         List<Integer> xList = getxList();
         Integer sumX = 0;
@@ -67,6 +73,7 @@ public class MyPointList {
         return averageX;
     }
 
+    @JsonIgnore
     public double getAverageY() {
         List<Integer> yList = getyList();
         Integer sumY = 0;
@@ -77,6 +84,7 @@ public class MyPointList {
         return averageY;
     }
 
+    @JsonIgnore
     public double getAveragePressure() {
         List<Integer> pressureList = getpList();
         Integer sumPressure = 0;
@@ -87,6 +95,7 @@ public class MyPointList {
         return ave;
     }
 
+    @JsonIgnore
     public List<Integer> getyList() {
         List<Integer> yList = new ArrayList<>();
         for (MyPoint point : myPoints) {
@@ -95,6 +104,7 @@ public class MyPointList {
         return yList;
     }
 
+    @JsonIgnore
     public List<Integer> getpList() {
         List<Integer> pList = new ArrayList<>();
         for (MyPoint point : myPoints) {
@@ -103,17 +113,28 @@ public class MyPointList {
         return pList;
     }
 
+    @JsonIgnore
     public Boolean isComplete() {
         return temp.isCompleted();
     }
 
+    @JsonIgnore
     public void reset() {
         myPoints.clear();
         temp.reset();
     }
 
+    @JsonIgnore
     public int getLength() {
         return myPoints.size();
     }
 
+
+    public void setMyPoints(List<MyPoint> myPoints) {
+        this.myPoints = myPoints;
+    }
+
+    public List<MyPoint> getMyPoints(){
+        return myPoints;
+    }
 }

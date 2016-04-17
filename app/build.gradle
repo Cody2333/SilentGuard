@@ -48,4 +48,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile files('libs/libsvm.jar')
     compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.7.3'
 }

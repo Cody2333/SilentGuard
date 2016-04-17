@@ -1,6 +1,8 @@
 package com.lowhot.cody.movement.bean;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lowhot.cody.movement.utils.FileUtils;
+
 
 /**
  * Created by cody_local on 2016/4/13.
@@ -19,6 +21,7 @@ public class MyPoint {
         this.pressure = pressure;
     }
 
+    @JsonIgnore
     public Boolean isCompleted() {
         if (x != -1 && y != -1 && pressure != -1) {
             if (timestamp == -1) {
@@ -31,6 +34,7 @@ public class MyPoint {
         }
     }
 
+    @JsonIgnore
     public Boolean isNew() {
         if (x == -1 && y == -1 && pressure == -1) {
             return true;
@@ -63,6 +67,7 @@ public class MyPoint {
         this.pressure = pressure;
     }
 
+    @JsonIgnore
     public void reset() {
         x = -1;
         y = -1;

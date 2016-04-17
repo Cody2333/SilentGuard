@@ -86,7 +86,7 @@ public class ScreenHandler {
                                     int type = idev.getSuccessfulPollingType();
                                     int code = idev.getSuccessfulPollingCode();
                                     int value = idev.getSuccessfulPollingValue();
-
+                                    Log.i("code",type+":"+code+":"+value+":"+FileUtils.getCurrentActivityName(ctx));
                                     //如果触摸事件结束返回true
                                     Boolean isEnd = codeHandler.handle(type, code, value);
 

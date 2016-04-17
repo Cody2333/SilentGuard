@@ -23,6 +23,7 @@ public class MyPoint {
     public Boolean isCompleted() {
         if (x != -1 && y != -1 && pressure != -1) {
             if (timestamp == -1) {
+                //当一个MyPoint对象属性值全了的时候设置时间戳
                 timestamp = FileUtils.getTimestamp();
             }
             return true;

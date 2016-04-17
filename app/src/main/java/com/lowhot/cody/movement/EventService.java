@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 
+import com.lowhot.cody.movement.model.ScreenListener;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.model.ScreenHandler;
 import com.lowhot.cody.movement.utils.AlertDialogUtils;
@@ -29,6 +30,7 @@ public class EventService extends Service implements SensorEventListener {
     private SensorHandler sensorHandler;
     private ScreenHandler screenHandler;
     private AlertDialogUtils alertDialogUtils;
+    private ScreenListener screenListener;
 
     @Override
     public void onCreate() {
@@ -37,12 +39,29 @@ public class EventService extends Service implements SensorEventListener {
         Toast.makeText(getApplicationContext(), "serviceStart", Toast.LENGTH_SHORT).show();
         sensorHandler = new SensorHandler();
         screenHandler = new ScreenHandler(getApplicationContext(), sensorHandler);
+        screenListener = new ScreenListener(getApplicationContext());
         alertDialogUtils = new AlertDialogUtils(getApplicationContext());
         // 打开设备,监听键盘
         //screenHandler.openDev();
         screenHandler.StartEventMonitor();
         // 监听传感器
         initSensor();
+        screenListener.begin(new ScreenListener.ScreenStateListener() {
+            @Override
+            public void onScreenOn() {
+                screenHandler.continueMonitor();
+            }
+
+            @Override
+            public void onScreenOff() {
+                screenHandler.stopEventMonitor();
+            }
+
+            @Override
+            public void onUserPresent() {
+                screenHandler.stopEventMonitor();
+            }
+        });
     }
 
     @Subscribe

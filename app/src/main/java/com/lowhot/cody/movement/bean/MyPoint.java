@@ -10,7 +10,6 @@ public class MyPoint {
     private int y = -1;
     private int pressure = -1;
     private long timestamp = -1;
-
     public MyPoint() {
     }
 

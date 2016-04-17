@@ -15,8 +15,8 @@ public class NodeList {
     private long beginStamp;
     private long endStamp;
     private MyPointList myPointList;
-    ArrayList<Accelerator> acceleratorQueue;
-    ArrayList<Gyroscope> gyroscopeQueue;
+    List<Accelerator> acceleratorQueue;
+    List<Gyroscope> gyroscopeQueue;
 
     public NodeList() {
         this.beginStamp = 0;
@@ -60,17 +60,17 @@ public class NodeList {
     public double getAverageAccelerator() {
         double temp = 0;
         for (Accelerator sv : acceleratorQueue) {
-            temp += sv.getAcce() * sv.getAcce();
+            temp += sv.getAcce();
         }
-        return Math.sqrt(temp);
+        return temp/acceleratorQueue.size();
     }
 
     public double getAverageGyroscope() {
         double temp = 0;
         for (Gyroscope sv : gyroscopeQueue) {
-            temp += sv.getGyroscope() * sv.getGyroscope();
+            temp += sv.getGyroscope();
         }
-        return Math.sqrt(temp);
+        return temp/gyroscopeQueue.size();
     }
 
     public void addX(int x) {
@@ -129,6 +129,8 @@ public class NodeList {
         myPointList.reset();
         this.beginStamp = 0;
         this.endStamp = 0;
+        acceleratorQueue.clear();
+        gyroscopeQueue.clear();
     }
 
 }

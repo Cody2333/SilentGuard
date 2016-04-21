@@ -2,9 +2,13 @@ package com.lowhot.cody.movement.model;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowhot.cody.movement.bean.Accelerator;
 import com.lowhot.cody.movement.bean.Gyroscope;
+import com.lowhot.cody.movement.bean.MyPointList;
 import com.lowhot.cody.movement.bean.NodeList;
+import com.lowhot.cody.movement.entity.SgTrace;
 import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.io.File;
@@ -61,7 +65,25 @@ public class ScreenEvent {
         Log.i(TAG, dir + "/" + appName);
         File file = FileUtils.createFile(dir, appName);
         FileUtils.writeTxt(file, line);
+
+        //保存轨迹数据到文本文件中
         saveTrack();
+        //保存轨迹信息到数据库中
+        saveInDataBase();
+    }
+
+    private void saveInDataBase() {
+        MyPointList data = nodeList.getMyPointList();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            String temp = objectMapper.writeValueAsString(data);
+            SgTrace sgTrace = new SgTrace(appName, temp, nodeList.getBeginStamp(), nodeList.getEndStamp());
+            sgTrace.save();
+        } catch (JsonProcessingException e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
+
     }
 
     public boolean judge() {

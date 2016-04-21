@@ -20,11 +20,11 @@ import android.widget.RadioGroup;
 import com.lowhot.cody.movement.bean.Config;
 import com.lowhot.cody.movement.svm.src.svm_main;
 import com.lowhot.cody.movement.utils.ErrorAlertDialogUtil;
+import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
 import com.lowhot.cody.movement.utils.ProgressDialogUtil;
 import com.lowhot.cody.movement.utils.ToastUtils;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
-import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -58,19 +58,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         activity = this;
-        init();
         initView();
         initListener();
         Intent serviceIntent = new Intent(MainActivity.this, EventService.class);
         startService(serviceIntent);
 
-
     }
 
-    private void init() {
-        ToastUtils.register(this);
-        FileUtils.register(this);
-    }
 
     public void initView() {
         btnStart = (Button) findViewById(R.id.btn_monitor_start);

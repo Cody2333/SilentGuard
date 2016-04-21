@@ -125,6 +125,10 @@ public class NodeList {
         return myPointList.getLength();
     }
 
+    public MyPointList getMyPointList() {
+        return myPointList;
+    }
+
     public void reset() {
         myPointList.reset();
         this.beginStamp = 0;

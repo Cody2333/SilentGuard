@@ -9,6 +9,7 @@ import com.lowhot.cody.movement.bean.Gyroscope;
 import com.lowhot.cody.movement.bean.MyPointList;
 import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.entity.SgTrace;
+import com.lowhot.cody.movement.entity.SgTraceInfo;
 import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.io.File;
@@ -60,16 +61,20 @@ public class ScreenEvent {
     }
 
     public void save() throws IOException {
+        //保存点击信息至文本文件
+        saveDefault();
+        //保存轨迹数据到文本文件中
+        saveTrack();
+        //保存轨迹信息到数据库中
+        saveInDataBase();
+    }
+
+    private void saveDefault() throws IOException {
         String line = setLine();
         Log.i(TAG, line);
         Log.i(TAG, dir + "/" + appName);
         File file = FileUtils.createFile(dir, appName);
         FileUtils.writeTxt(file, line);
-
-        //保存轨迹数据到文本文件中
-        saveTrack();
-        //保存轨迹信息到数据库中
-        saveInDataBase();
     }
 
     private void saveInDataBase() {
@@ -78,7 +83,12 @@ public class ScreenEvent {
         try {
             String temp = objectMapper.writeValueAsString(data);
             SgTrace sgTrace = new SgTrace(appName, temp, nodeList.getBeginStamp(), nodeList.getEndStamp());
+
+            ////todo getLength getMatchTimes  阻塞操作数据库的效率问题？？
+            SgTraceInfo sgTraceInfo = new SgTraceInfo(appName,nodeList.getType(),nodeList.getMethod(),
+                    nodeList.getLength(),nodeList.getDuringTime(),0);
             sgTrace.save();
+            sgTraceInfo.save();
         } catch (JsonProcessingException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();

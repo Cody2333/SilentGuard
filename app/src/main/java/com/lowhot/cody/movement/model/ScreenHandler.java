@@ -75,8 +75,9 @@ public class ScreenHandler {
                                     int type = idev.getSuccessfulPollingType();
                                     int code = idev.getSuccessfulPollingCode();
                                     int value = idev.getSuccessfulPollingValue();
-                                    final String line = FileUtils.formatLineForOriginData(ctx, idev.getName(), type, code, value);
-                                    FileUtils.writeTxt(originalScreenDataFile, line);
+                                    //下面两行记录原始数据
+                                    //final String line = FileUtils.formatLineForOriginData(ctx, idev.getName(), type, code, value);
+                                    //FileUtils.writeTxt(originalScreenDataFile, line);
                                     //如果触摸事件结束返回true
                                     Boolean isEnd = codeHandler.handle(type, code, value);
 
@@ -97,7 +98,7 @@ public class ScreenHandler {
                                             try {
                                         long x = FileUtils.getTimestamp();
                                                 screenEvent.save(); // 保存主人数据到文件
-                                        Log.e("TTTIME",String.valueOf(FileUtils.getTimestamp()-x));
+                                        Log.e("SAVE OPERATION TIME",String.valueOf(FileUtils.getTimestamp()-x));
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }

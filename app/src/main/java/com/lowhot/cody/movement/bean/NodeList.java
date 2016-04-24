@@ -1,5 +1,7 @@
 package com.lowhot.cody.movement.bean;
 
+import com.lowhot.cody.movement.utils.Constants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -129,6 +131,21 @@ public class NodeList {
         return myPointList;
     }
 
+    public String getType(){
+        if (getLength() <= 0) {
+            return Constants.TYPE_UNKNOW;
+        } else if (getLength() <= 2 && getLength() > 0) {
+            return Constants.TYPE_CLICK;
+        } else if (getLength() > 2) {
+            return Constants.TYPE_SLIDE;
+        }
+        return Constants.TYPE_UNKNOW;
+    }
+
+    public String getMethod(){
+        ////TODO
+        return Constants.METHOD_UNKNOW;
+    }
     public void reset() {
         myPointList.reset();
         this.beginStamp = 0;

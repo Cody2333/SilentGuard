@@ -15,19 +15,10 @@ import java.util.List;
  */
 public class TraceDao implements ITraceDao {
 
-    private static final double DISTANCE_THRESHOLD = 100;
 
     @Override
-    public boolean isTraceAlike(SgTrace trace1, SgTrace trace2) {
-        ArrayList<double[]> trace1List = (ArrayList<double[]>) trace1.getNodeList().getCoordinateList();
-        ArrayList<double[]> trace2List = (ArrayList<double[]>) trace2.getNodeList().getCoordinateList();
-        double distance = DtwUtils.dtwDistance(trace1List,trace2List);
-        return distance < DISTANCE_THRESHOLD;
-    }
-
-    @Override
-    public SgTrace matchTrace(SgTrace trace) {
-        return null;
+    public double isTraceDis(SgTrace trace1, SgTrace trace2) {
+        return 0;
     }
 
     @Override

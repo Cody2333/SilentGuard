@@ -95,7 +95,6 @@ public class FileUtils {
                 + " Z:" + z
                 + " Acc:" + accelerator;
         return line;
-
     }
 
     /**
@@ -155,7 +154,7 @@ public class FileUtils {
      * @return
      */
     public static File createFile(String filename) {
-        String name = BASE_DIR + "/" + filename + ".txt";
+        String name = BASE_DIR + "/" + "gyroscope" + ".txt";
         File outFile = new File(name);
         if (!outFile.exists()) {
             try {
@@ -177,7 +176,7 @@ public class FileUtils {
     public static File createFile(String append_dir, String filename) {
         String dir = BASE_DIR + append_dir;
         initDirs(append_dir);
-        String name = dir + "/" + filename + ".txt";
+        String name = dir + "/" + "gyroscope" + ".txt";
         File outFile = new File(name);
         if (!outFile.exists()) {
             try {

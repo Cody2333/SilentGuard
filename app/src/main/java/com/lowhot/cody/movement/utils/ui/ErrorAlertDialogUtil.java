@@ -1,4 +1,4 @@
-package com.lowhot.cody.movement.utils;
+package com.lowhot.cody.movement.utils.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;

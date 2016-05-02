@@ -23,6 +23,8 @@ public class ScreenHandler {
     private Boolean isRunning = false;
     //type ---> "master" or "guest"
     volatile String accountType = "master";
+    //当前匹配的轨迹id
+    volatile int currentMatchedId;
     volatile String dir = "";
 
     public ScreenHandler(Context ctx, SensorHandler sensorHandler) {

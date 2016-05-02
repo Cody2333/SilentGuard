@@ -17,7 +17,7 @@
  * along with Meizhi.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.lowhot.cody.movement.utils;
+package com.lowhot.cody.movement.utils.ui;
 
 import android.content.Context;
 import android.widget.Toast;

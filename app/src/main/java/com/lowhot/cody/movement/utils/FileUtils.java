@@ -89,20 +89,11 @@ public class FileUtils {
 
     }
 
-    public static String formatLine(Boolean isAdmin, double x, double y, double pressure, long time, double accelerator, double gyroscope, String appName) {
-        int isAdminInt = -1;
-        if (isAdmin) {
-            isAdminInt = 1;
-        } else {
-            isAdminInt = -1;
-        }
-        String line = String.valueOf(isAdminInt)
-                + " 0:" + x
-                + " 1:" + y
-                + " 2:" + pressure
-                + " 3:" + time
-                + " 4:" + accelerator
-                + " 5:" + gyroscope;
+    public static String formatLine(double x, double y, double z, double accelerator) {
+        String line = " X:" + x
+                + " Y:" + y
+                + " Z:" + z
+                + " Acc:" + accelerator;
         return line;
 
     }

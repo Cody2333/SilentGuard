@@ -73,19 +73,33 @@ public class ScreenEvent {
         return Math.sqrt(temp);
     }
 
-    public double getAverageGyroscope() {
+    public double getAverageX() {
         double temp = 0;
         for (Gyroscope sv : gyroscopeQueue) {
-            temp += sv.getGyroscope() * sv.getGyroscope();
+            temp = sv.getX();
         }
-        return Math.sqrt(temp);
+        return temp;
     }
 
+    public double getAverageY() {
+        double temp = 0;
+        for (Gyroscope sv : gyroscopeQueue) {
+            temp = sv.getY();
+        }
+        return temp;
+    }
+
+    public double getAverageZ() {
+        double temp = 0;
+        for (Gyroscope sv : gyroscopeQueue) {
+            temp = sv.getZ();
+        }
+        return temp;
+    }
 
     public String setLine() {
 
-        String line = FileUtils.formatLine(isAdmin, nodeList.getAverageX(), nodeList.getAverageY(), nodeList.getAveragePressure(),
-                nodeList.getDuringTime(), getAverageAccelerator(), getAverageGyroscope(), appName);
+        String line = FileUtils.formatLine(getAverageX(), getAverageY(), getAverageZ(), getAverageAccelerator());
         return line;
     }
 

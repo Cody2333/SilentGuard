@@ -23,6 +23,12 @@ public class Gyroscope {
         return gyroscope;
     }
 
+    public double getX() {return x; }
+
+    public double getY() {return y; }
+
+    public double getZ() {return z; }
+
     public void setX(double x) {
         this.x = x;
     }

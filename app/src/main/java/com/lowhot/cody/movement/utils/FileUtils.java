@@ -25,6 +25,7 @@ public class FileUtils {
     public static String BASE_DIR = "/sdcard/slide";
     public static String MODEL_DIR = BASE_DIR +"/model";
     public static String BASE_TRAIN_DIR = BASE_DIR +"/data/master";
+    public static String BASE_PREDICT_DIR = BASE_DIR + "/data/guest";
     public static String CONFIG_PATH = BASE_DIR +"/config/app.config.txt";
     private static void initDirs(String... strings) {
         for (String s : strings) {

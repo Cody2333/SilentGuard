@@ -177,9 +177,7 @@ public class MainActivity extends AppCompatActivity {
         events.Release();
     }
 
-
     class TrainTask extends AsyncTask{
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -194,6 +192,8 @@ public class MainActivity extends AppCompatActivity {
                 File root  = new File(FileUtils.BASE_TRAIN_DIR);
                 File configFile = new File(FileUtils.CONFIG_PATH);
                 File[] files = root.listFiles();
+                File testRoot = new File(FileUtils.BASE_PREDICT_DIR);
+                File[] testFiles = testRoot.listFiles();
                 for (File f : files){
                     if(f.isFile()){
                         //先判断app.config中是否有该appName的条目，如果没有则新建一个默认配置条目。

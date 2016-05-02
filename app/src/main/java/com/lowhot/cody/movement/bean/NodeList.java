@@ -11,16 +11,14 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class NodeList {
     //delay time for sensor data
-    @JsonIgnore
     public static final int DELAY = 30;
 
-    private long id;
     //保存一次触摸事件的x,y,pressure 等属性
     private long beginStamp;
     private long endStamp;
     private MyPointList myPointList;
-    List<Accelerator> acceleratorQueue;
-    List<Gyroscope> gyroscopeQueue;
+    private List<Accelerator> acceleratorQueue;
+    private List<Gyroscope> gyroscopeQueue;
 
     public NodeList() {
         this.beginStamp = 0;
@@ -158,14 +156,6 @@ public class NodeList {
 
     public static int getDELAY() {
         return DELAY;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setMyPointList(MyPointList myPointList) {

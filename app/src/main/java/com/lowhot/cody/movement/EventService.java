@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.model.ScreenHandler;
-import com.lowhot.cody.movement.utils.AlertDialogUtils;
+import com.lowhot.cody.movement.utils.ui.AlertDialogUtils;
 import com.lowhot.cody.movement.model.SensorHandler;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
 

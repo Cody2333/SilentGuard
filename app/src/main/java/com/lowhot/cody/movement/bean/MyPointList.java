@@ -114,6 +114,24 @@ public class MyPointList {
     }
 
     @JsonIgnore
+    public List<double[]> getXYList(){
+        ArrayList<double[]> xyList = new ArrayList<>();
+        for(MyPoint point: myPoints){
+            xyList.add(new double[]{point.getX(),point.getY()});
+        }
+        return xyList;
+    }
+
+    @JsonIgnore
+    public List<double[]> getXYPList(){
+        ArrayList<double[]> xypList = new ArrayList<>();
+        for(MyPoint point: myPoints){
+            xypList.add(new double[]{point.getX(),point.getY(),point.getPressure()});
+        }
+        return xypList;
+    }
+
+    @JsonIgnore
     public Boolean isComplete() {
         return temp.isCompleted();
     }

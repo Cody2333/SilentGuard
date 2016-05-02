@@ -1,6 +1,7 @@
 package com.lowhot.cody.movement.model.trace;
 
 import com.lowhot.cody.movement.bean.NodeList;
+import com.lowhot.cody.movement.entity.SgTrace;
 
 import java.util.List;
 
@@ -18,34 +19,35 @@ public interface ITraceHandler {
      * @param trace2 轨迹2
      * @return 相似返回true,否则false
      */
-    boolean isTraceAlike(NodeList trace1, NodeList trace2);
+    boolean isTraceAlike(SgTrace trace1, SgTrace trace2);
+
+    /**
+     * 返回与trace匹配的SgTrace
+     * @param trace
+     * @return
+     */
+    SgTrace matchTrace(SgTrace trace);
 
     /**
      * 挑出需要比较的轨迹
      * @param trace   轨迹
      * @return 需要被比较的轨迹
      */
-    List<NodeList> selectTraceToCompare(NodeList trace);
+    List<SgTrace> selectTraceToCompare(SgTrace trace);
 
     /**
      * 根据id获取轨迹
      * @param id id
      * @return 轨迹
      */
-    NodeList getTraceById(int id);
+    SgTrace getTraceById(int id);
 
     /**
      * 获取下一个轨迹
      * @param id    id
      * @return  下一个轨迹
      */
-    NodeList getNextTrace(int id);
+    List<SgTrace> getNextTrace(int id);
 
-    /**
-     * 获取一组动作的所有id
-     * @param id 动作中的id
-     * @return 一组动作id
-     */
-    long[] getTraceSeries(int id);
 
 }

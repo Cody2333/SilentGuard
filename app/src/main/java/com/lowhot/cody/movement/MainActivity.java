@@ -19,11 +19,11 @@ import android.widget.RadioGroup;
 
 import com.lowhot.cody.movement.bean.Config;
 import com.lowhot.cody.movement.svm.src.svm_main;
-import com.lowhot.cody.movement.utils.ErrorAlertDialogUtil;
+import com.lowhot.cody.movement.utils.ui.ErrorAlertDialogUtil;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
-import com.lowhot.cody.movement.utils.ProgressDialogUtil;
-import com.lowhot.cody.movement.utils.ToastUtils;
+import com.lowhot.cody.movement.utils.ui.ProgressDialogUtil;
+import com.lowhot.cody.movement.utils.ui.ToastUtils;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
 

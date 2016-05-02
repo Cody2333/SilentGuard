@@ -11,15 +11,24 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * Created by cody_local on 2016/3/11.
  */
+
+/**
+ * 一次触摸事件：点击、滑动等
+ */
 public class NodeList {
     //delay time for sensor data
+    @JsonIgnore
     public static final int DELAY = 30;
 
-    //保存一次触摸事件的x,y,pressure 等属性
+    //开始时间
     private long beginStamp;
+    //结束时间
     private long endStamp;
+    //轨迹点
     private MyPointList myPointList;
+    //加速器
     private List<Accelerator> acceleratorQueue;
+    //传感器
     private List<Gyroscope> gyroscopeQueue;
 
     public NodeList() {
@@ -125,10 +134,7 @@ public class NodeList {
         return myPointList.getLength();
     }
 
-    public MyPointList getMyPointList() {
-        return myPointList;
-    }
-
+    @JsonIgnore
     public String getType(){
         if (getLength() <= 0) {
             return Constants.TYPE_UNKNOW;
@@ -140,6 +146,7 @@ public class NodeList {
         return Constants.TYPE_UNKNOW;
     }
 
+    @JsonIgnore
     public String getMethod(){
         ////TODO
         return Constants.METHOD_UNKNOW;
@@ -151,6 +158,11 @@ public class NodeList {
         this.endStamp = 0;
         acceleratorQueue.clear();
         gyroscopeQueue.clear();
+    }
+
+    @JsonIgnore
+    public List<double[]> getCoordinateList(){
+        return myPointList.getXYList();
     }
 
 

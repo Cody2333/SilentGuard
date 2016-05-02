@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
-import com.lowhot.cody.movement.utils.ToastUtils;
+import com.lowhot.cody.movement.utils.ui.ToastUtils;
 
 import java.io.File;
 import java.io.IOException;

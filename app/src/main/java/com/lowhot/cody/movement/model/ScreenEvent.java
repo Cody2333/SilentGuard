@@ -10,6 +10,10 @@ import com.lowhot.cody.movement.bean.MyPointList;
 import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.entity.SgTrace;
 import com.lowhot.cody.movement.entity.SgTraceInfo;
+import com.lowhot.cody.movement.model.trace.ITraceHandler;
+import com.lowhot.cody.movement.model.trace.TraceHandler;
+import com.lowhot.cody.movement.utils.CommonUtil;
+import com.lowhot.cody.movement.utils.Constants;
 import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.io.File;
@@ -22,13 +26,16 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class ScreenEvent {
     public static String TAG = "ScreenEvent";
-    ArrayList<Accelerator> acceleratorQueue = new ArrayList<>();
-    ArrayList<Gyroscope> gyroscopeQueue = new ArrayList<>();
     //nodeList 保存了这次触摸事件的所有x,y,pressure等的信息列表
     private NodeList nodeList;
     public String appName;
     private Boolean isAdmin = true;
     private String dir;
+    /**
+     * 当前匹配的轨迹
+     */
+    private static SgTrace currentMatchedSgTrace = null;
+    private ITraceHandler traceHandler = new TraceHandler();
 
     public ScreenEvent(NodeList nodeList,
                        LinkedBlockingQueue<Accelerator> acceleratorQueue,
@@ -66,7 +73,9 @@ public class ScreenEvent {
         //保存轨迹数据到文本文件中
         saveTrack();
         //保存轨迹信息到数据库中
-        saveInDataBase();
+        if(isAdmin){
+            saveInDataBase();
+        }
     }
 
     private void saveDefault() throws IOException {
@@ -78,25 +87,21 @@ public class ScreenEvent {
     }
 
     private void saveInDataBase() {
-        MyPointList data = nodeList.getMyPointList();
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            String temp = objectMapper.writeValueAsString(data);
-            SgTrace sgTrace = new SgTrace(appName, temp, nodeList.getBeginStamp(), nodeList.getEndStamp());
-
-            ////todo getLength getMatchTimes  阻塞操作数据库的效率问题？？
-            SgTraceInfo sgTraceInfo = new SgTraceInfo(appName,nodeList.getType(),nodeList.getMethod(),
-                    nodeList.getLength(),nodeList.getDuringTime(),0);
+            final SgTrace sgTrace = new SgTrace(appName, nodeList);
             sgTrace.save();
+            final SgTraceInfo sgTraceInfo = new SgTraceInfo(appName, sgTrace.getId(), nodeList.getType(), nodeList.getMethod(), nodeList.getLength(), nodeList.getDuringTime(), 0);
             sgTraceInfo.save();
-        } catch (JsonProcessingException e) {
-            Log.e(TAG, e.getMessage());
+
+        } catch (Exception e) {
+            Log.e(TAG,e.getMessage());
             e.printStackTrace();
         }
 
     }
 
     public boolean judge() {
+
         ////TODO
         return true;
     }

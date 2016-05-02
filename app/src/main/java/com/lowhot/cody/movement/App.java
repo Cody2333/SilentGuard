@@ -3,7 +3,7 @@ package com.lowhot.cody.movement;
 import android.app.Application;
 
 import com.lowhot.cody.movement.utils.FileUtils;
-import com.lowhot.cody.movement.utils.ToastUtils;
+import com.lowhot.cody.movement.utils.ui.ToastUtils;
 import com.orm.SugarContext;
 
 /**

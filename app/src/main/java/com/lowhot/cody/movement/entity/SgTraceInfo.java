@@ -1,5 +1,7 @@
 package com.lowhot.cody.movement.entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.lowhot.cody.movement.utils.CommonUtil;
 import com.lowhot.cody.movement.utils.Constants;
 import com.orm.SugarRecord;
 
@@ -38,10 +40,10 @@ public class SgTraceInfo extends SugarRecord {
     public SgTraceInfo() {
     }
 
-    public SgTraceInfo(String appId,long traceId,String nextTraceIds, String type, String method, long length, long duration, int matchTimes) {
+    public SgTraceInfo(String appId,long traceId,List<Double> nextTraceIds, String type, String method, long length, long duration, int matchTimes) throws JsonProcessingException {
         this.appId = appId;
         this.traceId = traceId;
-        this.nextTraceIds = nextTraceIds;
+        this.nextTraceIds = CommonUtil.getObjectMapper().writeValueAsString(nextTraceIds);
         this.type = type;
         this.method = method;
         this.length = length;

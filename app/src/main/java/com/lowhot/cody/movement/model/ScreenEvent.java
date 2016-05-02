@@ -2,18 +2,13 @@ package com.lowhot.cody.movement.model;
 
 import android.util.Log;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lowhot.cody.movement.bean.Accelerator;
 import com.lowhot.cody.movement.bean.Gyroscope;
-import com.lowhot.cody.movement.bean.MyPointList;
 import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.entity.SgTrace;
 import com.lowhot.cody.movement.entity.SgTraceInfo;
-import com.lowhot.cody.movement.model.trace.ITraceHandler;
-import com.lowhot.cody.movement.model.trace.TraceHandler;
-import com.lowhot.cody.movement.utils.CommonUtil;
-import com.lowhot.cody.movement.utils.Constants;
+import com.lowhot.cody.movement.model.trace.ITraceDao;
+import com.lowhot.cody.movement.model.trace.TraceDao;
 import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.io.File;
@@ -35,7 +30,6 @@ public class ScreenEvent {
      * 当前匹配的轨迹
      */
     private static SgTrace currentMatchedSgTrace = null;
-    private ITraceHandler traceHandler = new TraceHandler();
 
     public ScreenEvent(NodeList nodeList,
                        LinkedBlockingQueue<Accelerator> acceleratorQueue,
@@ -90,7 +84,7 @@ public class ScreenEvent {
         try {
             final SgTrace sgTrace = new SgTrace(appName, nodeList);
             sgTrace.save();
-            final SgTraceInfo sgTraceInfo = new SgTraceInfo(appName, sgTrace.getId(), nodeList.getType(), nodeList.getMethod(), nodeList.getLength(), nodeList.getDuringTime(), 0);
+            final SgTraceInfo sgTraceInfo = new SgTraceInfo(appName, sgTrace.getId(),new ArrayList<Double>(){}, nodeList.getType(), nodeList.getMethod(), nodeList.getLength(), nodeList.getDuringTime(), 0);
             sgTraceInfo.save();
 
         } catch (Exception e) {

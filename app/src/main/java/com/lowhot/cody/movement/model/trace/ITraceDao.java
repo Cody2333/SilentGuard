@@ -11,7 +11,7 @@ import java.util.List;
  * 任务号：
  * 描述：
  */
-public interface ITraceHandler {
+public interface ITraceDao {
 
     /**
      * 比较两个轨迹是否相似
@@ -19,14 +19,7 @@ public interface ITraceHandler {
      * @param trace2 轨迹2
      * @return 相似返回true,否则false
      */
-    boolean isTraceAlike(SgTrace trace1, SgTrace trace2);
-
-    /**
-     * 返回与trace匹配的SgTrace
-     * @param trace
-     * @return
-     */
-    SgTrace matchTrace(SgTrace trace);
+    double isTraceDis(SgTrace trace1, SgTrace trace2);
 
     /**
      * 挑出需要比较的轨迹

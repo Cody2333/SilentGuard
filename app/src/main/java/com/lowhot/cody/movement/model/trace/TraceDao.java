@@ -1,9 +1,7 @@
 package com.lowhot.cody.movement.model.trace;
 
 
-import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.entity.SgTrace;
-import com.lowhot.cody.movement.entity.SgTraceInfo;
 import com.lowhot.cody.movement.utils.DtwUtils;
 
 import java.util.ArrayList;
@@ -15,7 +13,7 @@ import java.util.List;
  * 任务号：
  * 描述：处理轨迹相关逻辑，如轨迹匹配，轨迹选择
  */
-public class TraceHandler implements ITraceHandler{
+public class TraceDao implements ITraceDao {
 
     private static final double DISTANCE_THRESHOLD = 100;
 

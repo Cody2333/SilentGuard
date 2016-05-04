@@ -46,22 +46,7 @@ public class EventService extends Service implements SensorEventListener {
         screenHandler.StartEventMonitor();
         // 监听传感器
         initSensor();
-        screenListener.begin(new ScreenListener.ScreenStateListener() {
-            @Override
-            public void onScreenOn() {
-                screenHandler.continueMonitor();
-            }
 
-            @Override
-            public void onScreenOff() {
-                screenHandler.stopEventMonitor();
-            }
-
-            @Override
-            public void onUserPresent() {
-                screenHandler.stopEventMonitor();
-            }
-        });
     }
 
     @Subscribe

@@ -30,7 +30,7 @@ public class SensorHandler {
         this.gyroBuffer = new LinkedBlockingQueue<>();
     }
 
-    public void addGyroscopeData(double x, double y, double z, Boolean isReading) {
+    public void addOrientationData(double x, double y, double z, Boolean isReading) {
         Gyroscope gyroscope = new Gyroscope(x, y, z, FileUtils.getTimestamp());
         if (isReading) { // 正在保存 ScreenEvent 事件
             gyroBuffer.offer(gyroscope); // 传感器值写入缓冲队列

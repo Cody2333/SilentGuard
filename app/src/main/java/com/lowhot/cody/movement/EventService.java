@@ -99,7 +99,7 @@ public class EventService extends Service implements SensorEventListener {
                 sm.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_GAME);
         // 注册陀螺仪传感器
-        sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE),
+        sm.registerListener(this, sm.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_GAME);
     }
 
@@ -110,8 +110,8 @@ public class EventService extends Service implements SensorEventListener {
                 sensorHandler.addAccleratorData(event.values[0], event.values[1], event.values[2], screenHandler.isFLAG_SAVING_SCREEN_EVENT());
                 //Log.e("Sensor:",String.valueOf(event.timestamp));
                 break;
-            case Sensor.TYPE_GYROSCOPE:
-                sensorHandler.addGyroscopeData(event.values[0], event.values[1], event.values[2], screenHandler.isFLAG_SAVING_SCREEN_EVENT());
+            case Sensor.TYPE_ORIENTATION:
+                sensorHandler.addOrientationData(event.values[0], event.values[1], event.values[2], screenHandler.isFLAG_SAVING_SCREEN_EVENT());
                 break;
             default:
                 break;

@@ -19,6 +19,12 @@ public class Accelerator {
     }
 
 
+    public double getX() {return x; }
+
+    public double getY() {return y; }
+
+    public double getZ() {return z; }
+
     public long getTimestamp() {
         return timestamp;
     }

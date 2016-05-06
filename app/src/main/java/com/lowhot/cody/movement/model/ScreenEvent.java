@@ -81,10 +81,32 @@ public class ScreenEvent {
         return Math.sqrt(temp);
     }
 
+    public double getAverageX() {
+        double temp = 0;
+        for (Accelerator sv : acceleratorQueue) {
+            temp = sv.getX();
+        }
+        return temp;
+    }
+    public double getAverageY() {
+        double temp = 0;
+        for (Accelerator sv : acceleratorQueue) {
+            temp = sv.getY();
+        }
+        return temp;
+    }
+    public double getAverageZ() {
+        double temp = 0;
+        for (Accelerator sv : acceleratorQueue) {
+            temp = sv.getZ();
+        }
+        return temp;
+    }
+
 
     public String setLine() {
 
-        String line = FileUtils.formatLine(isAdmin, nodeList.getAverageX(), nodeList.getAverageY(), nodeList.getAveragePressure(),
+        String line = FileUtils.formatLine(isAdmin, getAverageX(), getAverageY(), getAverageZ(),
                 nodeList.getDuringTime(), getAverageAccelerator(), getAverageGyroscope(), appName);
         return line;
     }

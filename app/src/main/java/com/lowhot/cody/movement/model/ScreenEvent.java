@@ -7,8 +7,6 @@ import com.lowhot.cody.movement.bean.Gyroscope;
 import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.entity.SgTrace;
 import com.lowhot.cody.movement.entity.SgTraceInfo;
-import com.lowhot.cody.movement.model.trace.ITraceDao;
-import com.lowhot.cody.movement.model.trace.TraceDao;
 import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.io.File;
@@ -65,11 +63,11 @@ public class ScreenEvent {
         //保存点击信息至文本文件
         saveDefault();
         //保存轨迹数据到文本文件中
-        saveTrack();
+        //saveTrack();
         //保存轨迹信息到数据库中
-        if(isAdmin){
-            saveInDataBase();
-        }
+        //if(isAdmin){
+        //    saveInDataBase();
+        //}
     }
 
     private void saveDefault() throws IOException {

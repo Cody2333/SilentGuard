@@ -19,13 +19,13 @@ import android.widget.RadioGroup;
 
 import com.lowhot.cody.movement.bean.Config;
 import com.lowhot.cody.movement.svm.src.svm_main;
-import com.lowhot.cody.movement.utils.ui.ErrorAlertDialogUtil;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
-import com.lowhot.cody.movement.utils.ui.ProgressDialogUtil;
-import com.lowhot.cody.movement.utils.ui.ToastUtils;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
+import com.lowhot.cody.movement.utils.ui.ErrorAlertDialogUtil;
+import com.lowhot.cody.movement.utils.ui.ProgressDialogUtil;
+import com.lowhot.cody.movement.utils.ui.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -35,47 +35,47 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 
 public class MainActivity extends AppCompatActivity {
     final static String TAG = "MainActivity";
 
     Events events = new Events();
     boolean m_bMonitorOn = false;                // used in the thread to poll for input event node  messages
+    @Bind(R.id.btn_monitor_start)
     private Button btnStart;
+    @Bind(R.id.btn_monitor_stop)
     private Button btnStop;
-    public Activity activity;
+    @Bind(R.id.toolbar)
     private Toolbar toolbar;
+    @Bind(R.id.fab)
     private FloatingActionButton fab;
+    @Bind(R.id.id_rg)
     private RadioGroup rg;
+    @Bind(R.id.id_et_name)
     private EditText name;
+    @Bind(R.id.id_rb_master)
     private RadioButton rb_master;
+    @Bind(R.id.id_rb_guest)
     private RadioButton rb_guest;
+    @Bind(R.id.btn_train)
     private Button btnTrain;
-    Boolean isMaster=true;
+    Boolean isMaster = true;
     String str_name;
+    public Activity activity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
         activity = this;
-        initView();
         initListener();
         Intent serviceIntent = new Intent(MainActivity.this, EventService.class);
         startService(serviceIntent);
 
-    }
-
-
-    public void initView() {
-        btnStart = (Button) findViewById(R.id.btn_monitor_start);
-        btnStop = (Button) findViewById(R.id.btn_monitor_stop);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        rg = (RadioGroup) findViewById(R.id.id_rg);
-        name = (EditText)findViewById(R.id.id_et_name);
-        rb_master=(RadioButton)findViewById(R.id.id_rb_master);
-        rb_guest=(RadioButton)findViewById(R.id.id_rb_guest);
-        btnTrain=(Button)findViewById(R.id.btn_train);
     }
 
     public void initListener() {
@@ -86,9 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 m_bMonitorOn = true;
                 str_name = name.getText().toString();
                 Log.e(TAG, str_name);
-                if(str_name.length()==0 && isMaster == false){
-                    ErrorAlertDialogUtil.showErrorDialog(activity, "请输入客人名字",null);
-                }else{
+                if (str_name.length() == 0 && isMaster == false) {
+                    ErrorAlertDialogUtil.showErrorDialog(activity, "请输入客人名字", null);
+                } else {
                     EventBus.getDefault().post(new MonitorEvent(1));
                 }
             }
@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    class TrainTask extends AsyncTask{
+    class TrainTask extends AsyncTask {
 
         @Override
         protected void onPreExecute() {
@@ -185,11 +185,11 @@ public class MainActivity extends AppCompatActivity {
             svm_main m = new svm_main();
             try {
                 //遍历master文件夹中的数据文件进行训练生成模型
-                File root  = new File(FileUtils.BASE_TRAIN_DIR);
+                File root = new File(FileUtils.BASE_TRAIN_DIR);
                 File configFile = new File(FileUtils.CONFIG_PATH);
                 File[] files = root.listFiles();
-                for (File f : files){
-                    if(f.isFile()){
+                for (File f : files) {
+                    if (f.isFile()) {
                         //先判断app.config中是否有该appName的条目，如果没有则新建一个默认配置条目。
                         String name = f.getName();
                         Config config = null;
@@ -199,28 +199,28 @@ public class MainActivity extends AppCompatActivity {
                         );
                         BufferedReader bufferedReader = new BufferedReader(read);
                         String line = null;
-                        while ((line = bufferedReader.readLine())!=null){
-                            Log.i("File Context",line);
+                        while ((line = bufferedReader.readLine()) != null) {
+                            Log.i("File Context", line);
                             String[] argsList = line.split(",");
-                            Log.i("list",String.valueOf(argsList.length));
-                            if (argsList.length !=6){
-                                Log.e("File Context","argsList not match");
+                            Log.i("list", String.valueOf(argsList.length));
+                            if (argsList.length != 6) {
+                                Log.e("File Context", "argsList not match");
                                 break;
                             }
-                            if (argsList[0].equals(name)){
+                            if (argsList[0].equals(name)) {
                                 isExisted = true;
-                                int s= Integer.parseInt(argsList[1]);
-                                int t= Integer.parseInt(argsList[2]);
-                                double g=Double.parseDouble(argsList[3]);
-                                int r= Integer.parseInt(argsList[4]);
-                                double n=Double.parseDouble(argsList[5]);
-                                config = new Config(name,s,t,g,r,n);
+                                int s = Integer.parseInt(argsList[1]);
+                                int t = Integer.parseInt(argsList[2]);
+                                double g = Double.parseDouble(argsList[3]);
+                                int r = Integer.parseInt(argsList[4]);
+                                double n = Double.parseDouble(argsList[5]);
+                                config = new Config(name, s, t, g, r, n);
                                 m.train(config);
                                 break;
                             }
                         }
                         read.close();
-                        if(!isExisted){
+                        if (!isExisted) {
                             config = new Config(f.getName());
                             FileUtils.saveConfig(config);
                             m.train(config);
@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 }
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
             return null;

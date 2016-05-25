@@ -11,12 +11,12 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.widget.Toast;
 
-
-import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.model.ScreenHandler;
-import com.lowhot.cody.movement.utils.ui.AlertDialogUtils;
 import com.lowhot.cody.movement.model.SensorHandler;
+import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
+import com.lowhot.cody.movement.utils.eventBus.PredictEvent;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
+import com.lowhot.cody.movement.utils.ui.AlertDialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -46,7 +46,7 @@ public class EventService extends Service implements SensorEventListener {
     }
 
     @Subscribe
-    public void onPredictEvent(MonitorEvent event) {
+    public void onPredictEvent(PredictEvent event) {
         if (event.flag == 0) {
             screenHandler.stopPredictMonitor();
         } else if (event.flag == 1) {

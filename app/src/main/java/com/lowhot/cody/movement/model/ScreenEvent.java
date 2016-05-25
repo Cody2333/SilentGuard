@@ -7,6 +7,7 @@ import com.lowhot.cody.movement.bean.Gyroscope;
 import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.entity.SgTrace;
 import com.lowhot.cody.movement.entity.SgTraceInfo;
+import com.lowhot.cody.movement.svm.src.svm_main;
 import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.io.File;
@@ -92,10 +93,11 @@ public class ScreenEvent {
 
     }
 
-    public boolean judge() {
+    public boolean judge() throws IOException{
 
         ////TODO
-        return true;
+        svm_main m = new svm_main();
+        return m.predict(setLine(),appName);
     }
 
 

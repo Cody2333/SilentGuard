@@ -46,6 +46,15 @@ public class EventService extends Service implements SensorEventListener {
     }
 
     @Subscribe
+    public void onPredictEvent(MonitorEvent event) {
+        if (event.flag == 0) {
+            screenHandler.stopPredictMonitor();
+        } else if (event.flag == 1) {
+            screenHandler.continuePredictMonitor();
+        }
+    }
+
+    @Subscribe
     public void onMonitorEvent(MonitorEvent event) {
         if (event.flag == 0) {
             screenHandler.stopEventMonitor();

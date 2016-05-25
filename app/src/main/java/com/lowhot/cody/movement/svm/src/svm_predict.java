@@ -16,6 +16,29 @@ import libsvm.svm_parameter;
 import libsvm.svm_print_interface;
 
 class svm_predict {
+
+    public static Boolean simplePredict(String input,String modelPath) throws IOException {
+        svm_model model = svm.svm_load_model(modelPath);
+        String line = input;
+        StringTokenizer st = new StringTokenizer(line, " \t\n\r\f:");
+        int m = st.countTokens() / 2;
+        svm_node[] x = new svm_node[m];
+        for (int j = 0; j < m; j++) {
+            x[j] = new svm_node();
+            x[j].index = atoi(st.nextToken());
+            x[j].value = atof(st.nextToken());
+        }
+
+
+        double v;
+        v = svm.svm_predict(model, x);
+        if (v >0){
+            return true;
+        }
+
+        return false;
+    }
+
     private static svm_print_interface svm_print_null = new svm_print_interface()
     {
         public void print(String s) {}

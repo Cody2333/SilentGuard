@@ -14,4 +14,6 @@
     <string name="dialog_message_success">成功</string>
     <string name="dialog_text_wait">请等待</string>
 
+    <string name="str_btn_start_predict">开始预测</string>
+    <string name="str_btn_stop_predict">停止预测</string>
 </resources>

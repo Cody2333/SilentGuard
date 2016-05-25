@@ -21,6 +21,7 @@ public class ScreenHandler {
     private Context ctx;
     private SensorHandler sensorHandler;
     private Boolean isRunning = false;
+    private Boolean isPredicting = false;
     //type ---> "master" or "guest"
     volatile String accountType = "master";
     //当前匹配的轨迹id
@@ -37,10 +38,27 @@ public class ScreenHandler {
         Events.intEnableDebug(1);
     }
 
+    public void stopPredictMonitor() {
+        ToastUtils.showShort("predict stop");
+        if(isPredicting){
+            isRunning=false;
+            isPredicting=false;
+        }
+    }
+
+    public void continuePredictMonitor() {
+        ToastUtils.showShort("predict continue");
+        if(!isPredicting){
+            isRunning=true;
+            isPredicting=true;
+        }
+    }
     public void stopEventMonitor() {
         ToastUtils.showShort("service stop");
-        Log.i(TAG,"service stop");
+        Log.i(TAG, "service stop");
         isRunning = false;
+        isPredicting=false;
+
     }
 
     public void continueMonitor() {
@@ -48,6 +66,8 @@ public class ScreenHandler {
         dir = "/data/" + getType();
         ToastUtils.showShort("service continue,store dir" + dir);
         isRunning = true;
+        isPredicting=false;
+
         Log.i(TAG, "service continue");
     }
 
@@ -61,6 +81,7 @@ public class ScreenHandler {
             }
         }
         isRunning = false;
+        isPredicting = false;
         Thread b = new Thread(new Runnable() {
 
             public void run() {
@@ -70,7 +91,8 @@ public class ScreenHandler {
 
                 while (true) {
                     if (!isRunning) {
-                    } else {
+                    } else if (false ){
+                        //收集数据，但不进行预测
                         try {
                             for (Events.InputDevice idev : events.m_Devs) {
                                 if (idev.getOpen() && (0 == idev.getPollingEvent())) {
@@ -96,7 +118,7 @@ public class ScreenHandler {
                                                 FileUtils.getCurrentActivityName(ctx), dir,isAdmin);
                                         FLAG_SAVING_SCREEN_EVENT = false; // 将传感器值写入生成队列
 
-                                        if (screenEvent.judge()) {
+                                        if (true) {
                                             try {
                                         long x = FileUtils.getTimestamp();
                                                 screenEvent.save(); // 保存主人数据到文件
@@ -104,6 +126,41 @@ public class ScreenHandler {
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
+                                        }
+                                        codeHandler.reset();
+                                    }
+                                }
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else if (isRunning){
+                        //预测数据
+                        try {
+                            for (Events.InputDevice idev : events.m_Devs) {
+                                if (idev.getOpen() && (0 == idev.getPollingEvent())) {
+                                    int type = idev.getSuccessfulPollingType();
+                                    int code = idev.getSuccessfulPollingCode();
+                                    int value = idev.getSuccessfulPollingValue();
+                                    Boolean isEnd = codeHandler.handle(type, code, value);
+
+                                    if (isEnd) {
+                                        FLAG_SAVING_SCREEN_EVENT = true; // 让传感器值写入缓冲队列
+                                        ScreenEvent screenEvent = new ScreenEvent(
+                                                codeHandler.getNodeList(), sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
+                                                FileUtils.getCurrentActivityName(ctx), dir,true);
+                                        FLAG_SAVING_SCREEN_EVENT = false; // 将传感器值写入生成队列
+
+                                        if (screenEvent.judge()) {
+                                            try {
+                                                Log.i(TAG,"distinguished as master");
+                                                screenEvent.save(); // 保存主人数据到文件
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            Log.e(TAG,"distinguished as guest");
                                         }
                                         codeHandler.reset();
                                     }

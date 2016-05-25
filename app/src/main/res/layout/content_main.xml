@@ -65,4 +65,19 @@
         android:layout_gravity="center"
         android:id="@+id/btn_train" />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/str_btn_start_predict"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_predict_start" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/str_btn_stop_predict"
+        android:layout_gravity="center"
+        android:id="@+id/btn_predict_stop" />
+
 </LinearLayout>

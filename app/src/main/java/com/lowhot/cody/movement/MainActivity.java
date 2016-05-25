@@ -22,6 +22,7 @@ import com.lowhot.cody.movement.svm.src.svm_main;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
+import com.lowhot.cody.movement.utils.eventBus.PredictEvent;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
 import com.lowhot.cody.movement.utils.ui.ErrorAlertDialogUtil;
 import com.lowhot.cody.movement.utils.ui.ProgressDialogUtil;
@@ -44,24 +45,29 @@ public class MainActivity extends AppCompatActivity {
 
     Events events = new Events();
     boolean m_bMonitorOn = false;                // used in the thread to poll for input event node  messages
+    boolean predictOn = false;
     @Bind(R.id.btn_monitor_start)
-    private Button btnStart;
+    Button btnStart;
     @Bind(R.id.btn_monitor_stop)
-    private Button btnStop;
+    Button btnStop;
     @Bind(R.id.toolbar)
-    private Toolbar toolbar;
+    Toolbar toolbar;
     @Bind(R.id.fab)
-    private FloatingActionButton fab;
+    FloatingActionButton fab;
     @Bind(R.id.id_rg)
-    private RadioGroup rg;
+    RadioGroup rg;
     @Bind(R.id.id_et_name)
-    private EditText name;
+    EditText name;
     @Bind(R.id.id_rb_master)
-    private RadioButton rb_master;
+    RadioButton rb_master;
     @Bind(R.id.id_rb_guest)
-    private RadioButton rb_guest;
+    RadioButton rb_guest;
     @Bind(R.id.btn_train)
-    private Button btnTrain;
+    Button btnTrain;
+    @Bind(R.id.btn_predict_start)
+    Button btnPredictStart;
+    @Bind(R.id.btn_predict_stop)
+    Button btnPredictStop;
     Boolean isMaster = true;
     String str_name;
     public Activity activity;
@@ -101,6 +107,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnPredictStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(predictOn==false){
+                    EventBus.getDefault().post(new PredictEvent(1));
+                    predictOn = true;
+                }
+            }
+        });
+        btnPredictStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(predictOn){
+                    EventBus.getDefault().post(new PredictEvent(0));
+                    predictOn = false;
+                }
+            }
+        });
         btnTrain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,7 +138,6 @@ public class MainActivity extends AppCompatActivity {
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-
                 switch (checkedId) {
                     case R.id.id_rb_guest:
                         str_name = name.getText().toString();

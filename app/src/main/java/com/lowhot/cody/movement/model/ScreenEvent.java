@@ -7,7 +7,6 @@ import com.lowhot.cody.movement.bean.Gyroscope;
 import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.entity.SgTrace;
 import com.lowhot.cody.movement.entity.SgTraceInfo;
-import com.lowhot.cody.movement.svm.src.svm_main;
 import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.io.File;
@@ -25,6 +24,7 @@ public class ScreenEvent {
     public String appName;
     private Boolean isAdmin = true;
     private String dir;
+    private Judger judger;
     /**
      * 当前匹配的轨迹
      */
@@ -38,6 +38,7 @@ public class ScreenEvent {
         this.isAdmin = isAdmin;
         this.dir = dir;
         this.nodeList.handleSensor(acceleratorQueue, gyroscopeQueue);
+        this.judger = new Judger();
     }
 
 
@@ -102,8 +103,7 @@ public class ScreenEvent {
     public boolean judge() throws IOException{
 
         ////TODO
-        svm_main m = new svm_main();
-        return m.predict(setLine(),appName);
+        return judger.judge(setLine(),appName);
     }
 
 

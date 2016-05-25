@@ -47,9 +47,11 @@ public class ScreenEvent {
 
 
     public String setLine() {
-
+        if(Double.isNaN(nodeList.getAverageAccelerator()) || Double.isNaN(nodeList.getAverageGyroscope())){
+            return "";
+        }
         String line = FileUtils.formatLine(isAdmin, nodeList.getAverageX(), nodeList.getAverageY(), nodeList.getAveragePressure(),
-                nodeList.getDuringTime(), this.nodeList.getAverageAccelerator(), this.nodeList.getAverageGyroscope(), appName);
+                nodeList.getDuringTime(), nodeList.getAverageAccelerator(), nodeList.getAverageGyroscope(), appName);
         return line;
     }
 
@@ -73,6 +75,10 @@ public class ScreenEvent {
 
     private void saveDefault() throws IOException {
         String line = setLine();
+        if (line.equals("")){
+            Log.e(TAG,"Nan value accurs");
+            return;
+        }
         Log.i(TAG, line);
         Log.i(TAG, dir + "/" + appName);
         File file = FileUtils.createFile(dir, appName);

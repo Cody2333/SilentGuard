@@ -101,7 +101,7 @@ class svm_train {
         }
     }
 
-    private void run(String argv[]) throws IOException
+    public void run(String argv[]) throws IOException
     {
         parse_command_line(argv);
         read_problem();

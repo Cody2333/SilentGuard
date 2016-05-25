@@ -91,7 +91,7 @@ public class ScreenHandler {
 
                 while (true) {
                     if (!isRunning) {
-                    } else if (false ){
+                    } else if (isRunning ){
                         //收集数据，但不进行预测
                         try {
                             for (Events.InputDevice idev : events.m_Devs) {
@@ -135,7 +135,7 @@ public class ScreenHandler {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-                    } else if (isRunning){
+                    } else if (false){
                         //预测数据
                         try {
                             for (Events.InputDevice idev : events.m_Devs) {

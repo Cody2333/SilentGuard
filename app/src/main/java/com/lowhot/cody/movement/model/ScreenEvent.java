@@ -38,7 +38,7 @@ public class ScreenEvent {
         this.isAdmin = isAdmin;
         this.dir = dir;
         this.nodeList.handleSensor(acceleratorQueue, gyroscopeQueue);
-        this.judger = new Judger();
+        this.judger = Judger.getInstance();
     }
 
 

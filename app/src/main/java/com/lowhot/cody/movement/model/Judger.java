@@ -12,16 +12,25 @@ import java.util.List;
 public class Judger {
     ////todo 评判依据
     List<Boolean> judgeState;
+    private static Judger instance;
 
-    public Judger() {
+    private Judger() {
         this.judgeState = new ArrayList<>();
     }
 
-    public Boolean simpleJudge(String line,String appName) throws IOException{
+    public static synchronized Judger getInstance() {
+        if (instance == null) {
+            instance = new Judger();
+        }
+        return instance;
+    }
+
+    public Boolean simpleJudge(String line, String appName) throws IOException {
         svm_main m = new svm_main();
         Boolean result = m.predict(line, appName);
         return result;
     }
+
     public Boolean judge(String line, String appName) throws IOException {
         svm_main m = new svm_main();
         Boolean result = m.predict(line, appName);

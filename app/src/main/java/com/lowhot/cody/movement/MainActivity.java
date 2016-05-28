@@ -5,28 +5,29 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.lowhot.cody.movement.bean.Config;
 import com.lowhot.cody.movement.svm.src.svm_main;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
+import com.lowhot.cody.movement.utils.eventBus.LogEvent;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.eventBus.PredictEvent;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
 import com.lowhot.cody.movement.utils.ui.ErrorAlertDialogUtil;
 import com.lowhot.cody.movement.utils.ui.ProgressDialogUtil;
-import com.lowhot.cody.movement.utils.ui.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -48,10 +49,6 @@ public class MainActivity extends AppCompatActivity {
     Button btnStart;
     @Bind(R.id.btn_monitor_stop)
     Button btnStop;
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-    @Bind(R.id.fab)
-    FloatingActionButton fab;
     @Bind(R.id.id_rg)
     RadioGroup rg;
     @Bind(R.id.id_et_name)
@@ -66,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
     Button btnPredictStart;
     @Bind(R.id.btn_predict_stop)
     Button btnPredictStop;
+    @Bind(R.id.tv_log)
+    TextView tvLog;
     Boolean isMaster = true;
     String str_name;
     public Activity activity;
@@ -75,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        EventBus.getDefault().register(this);
         activity = this;
         initListener();
         Intent serviceIntent = new Intent(MainActivity.this, EventService.class);
@@ -82,11 +82,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLogEvent(LogEvent event) {
+        tvLog.append(event.getLogInfo());
+    }
     public void initListener() {
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventBus.getDefault().post(new LogEvent("running at collecting mode"));
                 m_bMonitorOn = true;
                 str_name = name.getText().toString();
                 Log.e(TAG, str_name);
@@ -100,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         btnStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                EventBus.getDefault().post(new LogEvent("collecting mode stopped"));
                 m_bMonitorOn = false;
                 EventBus.getDefault().post(new MonitorEvent(0));
             }
@@ -108,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
         btnPredictStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(predictOn==false){
+                EventBus.getDefault().post(new LogEvent("running at monitoring mode"));
+                if (predictOn == false) {
                     EventBus.getDefault().post(new PredictEvent(1));
                     predictOn = true;
                 }
@@ -117,7 +124,8 @@ public class MainActivity extends AppCompatActivity {
         btnPredictStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(predictOn){
+                EventBus.getDefault().post(new LogEvent("monitoring mode stopped"));
+                if (predictOn) {
                     EventBus.getDefault().post(new PredictEvent(0));
                     predictOn = false;
                 }
@@ -127,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //TODO 训练模型
+                EventBus.getDefault().post(new LogEvent("===== training model ====="));
                 TrainTask task = new TrainTask();
                 task.execute();
 
@@ -236,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Object o) {
             super.onPostExecute(o);
             ProgressDialogUtil.progressDialogDismiss();
-            ToastUtils.showShort("训练完成");
+            EventBus.getDefault().post(new LogEvent("training model finished"));
         }
     }
 

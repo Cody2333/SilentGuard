@@ -6,6 +6,7 @@ import android.util.Log;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
 import com.lowhot.cody.movement.utils.eventBus.AlertEvent;
+import com.lowhot.cody.movement.utils.eventBus.LogEvent;
 import com.lowhot.cody.movement.utils.ui.ToastUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,6 +40,10 @@ public class ScreenHandler {
         //初始化 events
         events.Init();
         Events.intEnableDebug(1);
+        EventBus.getDefault().post(new LogEvent("EventHandler initlized"));
+        EventBus.getDefault().post(new LogEvent("sensor and input event monitoring on"));
+
+
     }
 
     public void stopPredictMonitor() {
@@ -115,6 +120,7 @@ public class ScreenHandler {
                                         }else{
                                             isAdmin = false;
                                         }
+
                                         ScreenEvent screenEvent = new ScreenEvent(
                                                 codeHandler.getNodeList(), sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
                                                 FileUtils.getCurrentActivityName(ctx), dir,isAdmin);
@@ -122,7 +128,7 @@ public class ScreenHandler {
 
                                         if (true) {
                                             try {
-                                        //long x = FileUtils.getTimestamp();
+                                                //long x = FileUtils.getTimestamp();
                                                 screenEvent.save(); // 保存主人数据到文件
                                         //Log.e("SAVE OPERATION TIME",String.valueOf(FileUtils.getTimestamp()-x));
                                             } catch (IOException e) {
@@ -156,14 +162,16 @@ public class ScreenHandler {
 
                                         if (screenEvent.judge()) {
                                             try {
-                                                Log.i(TAG,"distinguished as master");
+                                                Log.i(TAG, "distinguished as master");
+                                                EventBus.getDefault().post(new LogEvent("mode:monitoring-----predicted as master"));
                                                 ////todo 是否保存数据??
                                                 //screenEvent.save(); // 保存主人数据到文件
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
                                         } else {
-                                            Log.e(TAG,"distinguished as guest");
+                                            EventBus.getDefault().post(new LogEvent("mode:monitoring-----predicted as guest"));
+                                            Log.e(TAG, "distinguished as guest");
                                             EventBus.getDefault().post(new AlertEvent(true));
                                             Judger.getInstance().reset();
                                         }

@@ -2,18 +2,18 @@
     <string name="app_name">movementSecurity</string>
     <string name="action_settings">Settings</string>
 
-    <string name="str_btn_start_monitor">开始监控</string>
-    <string name="str_btn_stop_monitor">停止监控</string>
+    <string name="str_btn_start_monitor">开始收集数据</string>
+    <string name="str_btn_stop_monitor">停止收集数据</string>
     <string name="dialog_error_title">错误</string>
     <string name="str_master">主人</string>
     <string name="str_guest">客人</string>
     <string name="chooseType">请选择是主人还是客人</string>
-    <string name="str_train">训练</string>
+    <string name="str_train">训练模型</string>
 
     <string name="dialog_message_title">提示</string>
     <string name="dialog_message_success">成功</string>
     <string name="dialog_text_wait">请等待</string>
 
-    <string name="str_btn_start_predict">开始预测</string>
-    <string name="str_btn_stop_predict">停止预测</string>
+    <string name="str_btn_start_predict">开始监测服务</string>
+    <string name="str_btn_stop_predict">停止监测服务</string>
 </resources>

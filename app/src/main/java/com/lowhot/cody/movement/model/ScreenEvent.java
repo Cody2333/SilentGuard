@@ -8,6 +8,9 @@ import com.lowhot.cody.movement.bean.NodeList;
 import com.lowhot.cody.movement.entity.SgTrace;
 import com.lowhot.cody.movement.entity.SgTraceInfo;
 import com.lowhot.cody.movement.utils.FileUtils;
+import com.lowhot.cody.movement.utils.eventBus.LogEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -81,6 +84,8 @@ public class ScreenEvent {
             return;
         }
         Log.i(TAG, line);
+        EventBus.getDefault().post(new LogEvent(line));
+        EventBus.getDefault().post(new LogEvent(appName));
         Log.i(TAG, dir + "/" + appName);
         File file = FileUtils.createFile(dir, appName);
         FileUtils.writeTxt(file, line);

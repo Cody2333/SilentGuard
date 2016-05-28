@@ -4,6 +4,9 @@ import android.util.Log;
 
 import com.lowhot.cody.movement.bean.Config;
 import com.lowhot.cody.movement.utils.FileUtils;
+import com.lowhot.cody.movement.utils.eventBus.LogEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,10 +15,12 @@ public class svm_main {
     public static final String TAG = "SVM";
 
     public Boolean predict(String predict, String appNmae) throws IOException {
-        Log.i(TAG, "....svm_main predicting....");
+        //Log.i(TAG, "....svm_main predicting....");
         File f = new File(FileUtils.MODEL_DIR + "/" + appNmae + ".txt");
         if (!f.exists()) {
             Log.e(TAG, "haven't trained this page yet");
+            EventBus.getDefault().post(new LogEvent("Error:haven't trained this page yet:"+FileUtils.MODEL_DIR + "/" + appNmae + ".txt"));
+
             return true;
         }
         return svm_predict.simplePredict(predict, FileUtils.MODEL_DIR + "/" + appNmae + ".txt");
@@ -27,7 +32,7 @@ public class svm_main {
     }
 
     public static void startTrain(String train, String model, int S, int T, double G, double R, double N) throws IOException {
-        System.out.println("....svm_main training now start....");
+        //System.out.println("....svm_main training now start....");
         String[] arg = {"-s", S + "", "-t", T + "", "-g", G + "", "-r", R + "", "-n", N + "", train, model};
         try {
             svm_train t = new svm_train();

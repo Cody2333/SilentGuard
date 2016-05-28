@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.lowhot.cody.movement.model.ScreenHandler;
 import com.lowhot.cody.movement.model.SensorHandler;
 import com.lowhot.cody.movement.utils.eventBus.AlertEvent;
+import com.lowhot.cody.movement.utils.eventBus.LogEvent;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.eventBus.PredictEvent;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
@@ -42,6 +43,7 @@ public class EventService extends Service implements SensorEventListener {
         alertDialogUtils = new AlertDialogUtils(getApplicationContext());
         // 打开设备,监听键盘
         //screenHandler.openDev();
+        EventBus.getDefault().post(new LogEvent("Event Service initlized"));
         screenHandler.StartEventMonitor();
         // 监听传感器
         initSensor();

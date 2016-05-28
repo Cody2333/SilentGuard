@@ -28,7 +28,7 @@ public class ScreenHandler {
     volatile String accountType = "master";
     //当前匹配的轨迹id
     volatile int currentMatchedId;
-    volatile String dir = "";
+    volatile String dir = "/data/master";
 
     public ScreenHandler(Context ctx, SensorHandler sensorHandler) {
         this.ctx = ctx;

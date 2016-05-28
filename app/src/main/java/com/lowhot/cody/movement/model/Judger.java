@@ -43,6 +43,9 @@ public class Judger {
         return checkState();
     }
 
+    public void reset(){
+        judgeState.clear();
+    }
     public Boolean checkState() {
         if (judgeState.size() < 5) {
             return true;

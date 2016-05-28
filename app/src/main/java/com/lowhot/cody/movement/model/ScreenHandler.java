@@ -5,9 +5,11 @@ import android.util.Log;
 
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
+import com.lowhot.cody.movement.utils.eventBus.AlertEvent;
 import com.lowhot.cody.movement.utils.ui.ToastUtils;
 
-import java.io.File;
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.IOException;
 
 /**
@@ -30,6 +32,7 @@ public class ScreenHandler {
 
     public ScreenHandler(Context ctx, SensorHandler sensorHandler) {
         this.ctx = ctx;
+        //EventBus.getDefault().register(this);
         this.sensorHandler = sensorHandler;
         events = new Events();
         FLAG_SAVING_SCREEN_EVENT = false;
@@ -86,7 +89,6 @@ public class ScreenHandler {
 
             public void run() {
 
-                File originalScreenDataFile = FileUtils.createFile("eventInjectOrignial");
                 CodeHandler codeHandler = new CodeHandler();
 
                 while (true) {
@@ -120,9 +122,9 @@ public class ScreenHandler {
 
                                         if (true) {
                                             try {
-                                        long x = FileUtils.getTimestamp();
+                                        //long x = FileUtils.getTimestamp();
                                                 screenEvent.save(); // 保存主人数据到文件
-                                        Log.e("SAVE OPERATION TIME",String.valueOf(FileUtils.getTimestamp()-x));
+                                        //Log.e("SAVE OPERATION TIME",String.valueOf(FileUtils.getTimestamp()-x));
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -155,12 +157,15 @@ public class ScreenHandler {
                                         if (screenEvent.judge()) {
                                             try {
                                                 Log.i(TAG,"distinguished as master");
-                                                screenEvent.save(); // 保存主人数据到文件
-                                            } catch (IOException e) {
+                                                ////todo 是否保存数据??
+                                                //screenEvent.save(); // 保存主人数据到文件
+                                            } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
                                         } else {
                                             Log.e(TAG,"distinguished as guest");
+                                            EventBus.getDefault().post(new AlertEvent(true));
+                                            Judger.getInstance().reset();
                                         }
                                         codeHandler.reset();
                                     }
@@ -184,10 +189,6 @@ public class ScreenHandler {
         return FLAG_SAVING_SCREEN_EVENT;
     }
 
-
-    public Events getEvents() {
-        return events;
-    }
 
     public void setType(String type) {
         this.accountType = type;

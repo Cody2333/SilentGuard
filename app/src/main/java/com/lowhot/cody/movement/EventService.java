@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.lowhot.cody.movement.model.ScreenHandler;
 import com.lowhot.cody.movement.model.SensorHandler;
+import com.lowhot.cody.movement.utils.eventBus.AlertEvent;
 import com.lowhot.cody.movement.utils.eventBus.MonitorEvent;
 import com.lowhot.cody.movement.utils.eventBus.PredictEvent;
 import com.lowhot.cody.movement.utils.eventBus.RadioButtonEvent;
@@ -20,6 +21,7 @@ import com.lowhot.cody.movement.utils.ui.AlertDialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 @SuppressLint("ShowToast")
 public class EventService extends Service implements SensorEventListener {
@@ -45,6 +47,13 @@ public class EventService extends Service implements SensorEventListener {
         initSensor();
     }
 
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAlertEvent(AlertEvent event) {
+        if(event.alert){
+            new AlertDialogUtils(getApplicationContext()).showAlertDialog();
+        }
+    }
     @Subscribe
     public void onPredictEvent(PredictEvent event) {
         if (event.flag == 0) {

@@ -15,7 +15,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 /**
  * 一次触摸事件：点击、滑动等
  */
-public class NodeList {
+public class InputEvent {
     //delay time for sensor data
     @JsonIgnore
     public static final int DELAY = 30;
@@ -24,6 +24,9 @@ public class NodeList {
     private long beginStamp;
     //结束时间
     private long endStamp;
+
+    //应用名称
+    private String appId;
     //轨迹点
     private MyPointList myPointList;
     //加速器
@@ -31,7 +34,7 @@ public class NodeList {
     //传感器
     private List<Gyroscope> gyroscopeQueue;
 
-    public NodeList() {
+    public InputEvent() {
         this.beginStamp = 0;
         this.endStamp = 0;
         myPointList = new MyPointList();
@@ -135,6 +138,9 @@ public class NodeList {
     }
 
     @JsonIgnore
+    public double getSlope(){return myPointList.getSlope();}
+
+    @JsonIgnore
     public String getType(){
         if (getLength() <= 0) {
             return Constants.TYPE_UNKNOW;
@@ -161,8 +167,13 @@ public class NodeList {
     }
 
     @JsonIgnore
-    public List<double[]> getCoordinateList(){
+    public List<double[]> getAbsCoordinateList(){
         return myPointList.getXYList();
+    }
+
+    @JsonIgnore
+    public List<double[]> getRelCoordinateList(){
+        return myPointList.getRelXYList();
     }
 
 
@@ -182,6 +193,13 @@ public class NodeList {
         return endStamp;
     }
 
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
 
     public MyPointList getMyPointList() {
         return myPointList;

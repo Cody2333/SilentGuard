@@ -1,6 +1,6 @@
 package com.lowhot.cody.movement.model;
 
-import com.lowhot.cody.movement.bean.NodeList;
+import com.lowhot.cody.movement.bean.InputEvent;
 import com.lowhot.cody.movement.utils.Events;
 import com.lowhot.cody.movement.utils.FileUtils;
 
@@ -8,11 +8,11 @@ import com.lowhot.cody.movement.utils.FileUtils;
  * Created by cody_local on 2016/3/9.
  */
 public class CodeHandler {
-    NodeList nodeList;
+    InputEvent inputEvent;
     public static final String TAG = "CodeHandler";
 
     public CodeHandler() {
-        this.nodeList = new NodeList();
+        this.inputEvent = new InputEvent();
     }
 
     /**
@@ -25,27 +25,27 @@ public class CodeHandler {
     public Boolean handle(int type, int code, int value) {
 
         if (type == Events.EV_KEY && code == Events.BTN_TOUCH && value == 1) {
-            nodeList.setBeginStamp(FileUtils.getTimestamp());
+            inputEvent.setBeginStamp(FileUtils.getTimestamp());
         } else if (type == Events.EV_ABS && code == Events.PRESSURE) {
-            nodeList.addPressure(value);
+            inputEvent.addPressure(value);
         } else if (type == Events.EV_ABS && code == Events.ABS_X) {
-            nodeList.addX(value);
+            inputEvent.addX(value);
         } else if (type == Events.EV_ABS && code == Events.ABS_Y) {
-            nodeList.addY(value);
+            inputEvent.addY(value);
         } else if (type == Events.EV_KEY && code == Events.BTN_TOUCH && value == 0) {
-            nodeList.setEndStamp(FileUtils.getTimestamp());
+            inputEvent.setEndStamp(FileUtils.getTimestamp());
             return true;
         }
         return false;
 
     }
 
-    public NodeList getNodeList() {
-        return nodeList;
+    public InputEvent getInputEvent() {
+        return inputEvent;
     }
 
     public void reset() {
-        nodeList.reset();
+        inputEvent.reset();
     }
 
 

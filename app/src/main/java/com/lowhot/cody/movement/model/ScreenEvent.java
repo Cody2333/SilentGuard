@@ -4,11 +4,9 @@ import android.util.Log;
 
 import com.lowhot.cody.movement.bean.Accelerator;
 import com.lowhot.cody.movement.bean.Gyroscope;
-import com.lowhot.cody.movement.bean.NodeList;
+import com.lowhot.cody.movement.bean.InputEvent;
 import com.lowhot.cody.movement.entity.SgTrace;
 import com.lowhot.cody.movement.entity.SgTraceInfo;
-import com.lowhot.cody.movement.model.trace.ITraceDao;
-import com.lowhot.cody.movement.model.trace.TraceDao;
 import com.lowhot.cody.movement.utils.FileUtils;
 
 import java.io.File;
@@ -21,8 +19,8 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 public class ScreenEvent {
     public static String TAG = "ScreenEvent";
-    //nodeList 保存了这次触摸事件的所有x,y,pressure等的信息列表
-    private NodeList nodeList;
+    //inputEvent 保存了这次触摸事件的所有x,y,pressure等的信息列表
+    private InputEvent inputEvent;
     public String appName;
     private Boolean isAdmin = true;
     private String dir;
@@ -31,33 +29,33 @@ public class ScreenEvent {
      */
     private static SgTrace currentMatchedSgTrace = null;
 
-    public ScreenEvent(NodeList nodeList,
+    public ScreenEvent(InputEvent inputEvent,
                        LinkedBlockingQueue<Accelerator> acceleratorQueue,
                        LinkedBlockingQueue<Gyroscope> gyroscopeQueue, String appName, String dir, Boolean isAdmin) {
-        this.nodeList = nodeList;
+        this.inputEvent = inputEvent;
         this.appName = appName;
         this.isAdmin = isAdmin;
         this.dir = dir;
-        this.nodeList.handleSensor(acceleratorQueue, gyroscopeQueue);
+        this.inputEvent.handleSensor(acceleratorQueue, gyroscopeQueue);
     }
 
 
     public long getTime() {
-        return nodeList.getDuringTime();
+        return inputEvent.getDuringTime();
     }
 
 
     public String setLine() {
 
-        String line = FileUtils.formatLine(isAdmin, nodeList.getAverageX(), nodeList.getAverageY(), nodeList.getAveragePressure(),
-                nodeList.getDuringTime(), this.nodeList.getAverageAccelerator(), this.nodeList.getAverageGyroscope(), appName);
+        String line = FileUtils.formatLine(isAdmin, inputEvent.getAverageX(), inputEvent.getAverageY(), inputEvent.getAveragePressure(),
+                inputEvent.getDuringTime(), this.inputEvent.getAverageAccelerator(), this.inputEvent.getAverageGyroscope(), appName);
         return line;
     }
 
     public void saveTrack() throws IOException {
         String trackDir = dir + "/" + "trace";
         File f = FileUtils.createFile(trackDir, appName);
-        String line = FileUtils.formatTrackData(nodeList.getMyPoints());
+        String line = FileUtils.formatTrackData(inputEvent.getMyPoints());
         FileUtils.writeTxt(f, line);
     }
 
@@ -82,9 +80,9 @@ public class ScreenEvent {
 
     private void saveInDataBase() {
         try {
-            final SgTrace sgTrace = new SgTrace(appName, nodeList);
+            final SgTrace sgTrace = new SgTrace(appName, inputEvent);
             sgTrace.save();
-            final SgTraceInfo sgTraceInfo = new SgTraceInfo(appName, sgTrace.getId(),new ArrayList<Double>(){}, nodeList.getType(), nodeList.getMethod(), nodeList.getLength(), nodeList.getDuringTime(), 0);
+            final SgTraceInfo sgTraceInfo = new SgTraceInfo(appName, sgTrace.getId(),new ArrayList<Double>(){}, inputEvent.getType(), inputEvent.getMethod(), inputEvent.getLength(), inputEvent.getDuringTime(), 0);
             sgTraceInfo.save();
 
         } catch (Exception e) {

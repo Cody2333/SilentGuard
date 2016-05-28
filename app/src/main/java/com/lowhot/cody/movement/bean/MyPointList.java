@@ -54,6 +54,19 @@ public class MyPointList {
     }
 
     @JsonIgnore
+    public Double getSlope(){
+        if(myPoints.size() <= 1){
+            return 0D;
+        }else {
+            MyPoint firstPoint = myPoints.get(0);
+            MyPoint lastPoint = myPoints.get(myPoints.size()-1);
+            return Math.atan((double)(lastPoint.getY() - firstPoint.getY())/(double)(lastPoint.getX()-firstPoint.getX()));
+        }
+
+
+    }
+
+    @JsonIgnore
     public List<Integer> getxList() {
         List<Integer> xList = new ArrayList<>();
         for (MyPoint point : myPoints) {
@@ -118,6 +131,23 @@ public class MyPointList {
         ArrayList<double[]> xyList = new ArrayList<>();
         for(MyPoint point: myPoints){
             xyList.add(new double[]{point.getX(),point.getY()});
+        }
+        return xyList;
+    }
+
+    @JsonIgnore
+    public List<double[]> getRelXYList(){
+        ArrayList<double[]> xyList = new ArrayList<>();
+        double initX,initY;
+        if(myPoints.size() == 1){
+            initX = 0;
+            initY = 0;
+        }else {
+            initX = myPoints.get(0).getX();
+            initY = myPoints.get(0).getY();
+        }
+        for(MyPoint point: myPoints){
+            xyList.add(new double[]{point.getX()-initX,point.getY()-initY});
         }
         return xyList;
     }

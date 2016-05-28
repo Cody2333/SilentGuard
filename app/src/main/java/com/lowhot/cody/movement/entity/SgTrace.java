@@ -3,7 +3,7 @@ package com.lowhot.cody.movement.entity;
 import android.util.Log;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lowhot.cody.movement.bean.NodeList;
+import com.lowhot.cody.movement.bean.InputEvent;
 import com.lowhot.cody.movement.utils.CommonUtil;
 import com.orm.SugarRecord;
 import com.orm.dsl.Ignore;
@@ -18,24 +18,24 @@ public class SgTrace extends SugarRecord {
     @Ignore
     private static final String TAG = "sgTrace";
     String appId;
-    //NodeList 序列化字符串
+    //InputEvent 序列化字符串
     String traceData;
 
     public SgTrace() {
     }
 
-    public SgTrace( String appId, NodeList nodeList) throws JsonProcessingException{
+    public SgTrace( String appId, InputEvent inputEvent) throws JsonProcessingException{
         this.appId = appId;
-        this.traceData = CommonUtil.getObjectMapper().writeValueAsString(nodeList);
+        this.traceData = CommonUtil.getObjectMapper().writeValueAsString(inputEvent);
     }
 
-    public NodeList getNodeList(){
-        NodeList nodeList = null;
+    public InputEvent getInputEvent(){
+        InputEvent inputEvent = null;
         try {
-            nodeList = CommonUtil.getObjectMapper().readValue(traceData,NodeList.class);
+            inputEvent = CommonUtil.getObjectMapper().readValue(traceData,InputEvent.class);
         } catch (IOException e) {
             Log.e(TAG, e.getMessage());
         }
-        return nodeList;
+        return inputEvent;
     }
 }

@@ -7,6 +7,7 @@ import com.util.DistanceFunction;
 import com.util.DistanceFunctionFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 创建者: chengfeng
@@ -24,11 +25,11 @@ public class DtwUtils {
      * @param trace2 待比较的轨迹
      * @return 两个轨迹的dtw距离
      */
-    public static double dtwDistance(ArrayList<double[]> traceTemplate, ArrayList<double[]> trace2){
-        final TimeSeries tsI = new TimeSeries(traceTemplate);
-        final TimeSeries tsJ = new TimeSeries(trace2);
+    public static double dtwDistance(List<double[]> traceTemplate, List<double[]> trace2){
+        final TimeSeries tsI = new TimeSeries((ArrayList<double[]>) traceTemplate);
+        final TimeSeries tsJ = new TimeSeries((ArrayList<double[]>) trace2);
         final DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");
         final TimeWarpInfo info = FastDTW.getWarpInfoBetween(tsI, tsJ, WINDOW, distFn);
-        return info.getDistance();
+        return info.getDistance()/info.getPath().size();
     }
 }

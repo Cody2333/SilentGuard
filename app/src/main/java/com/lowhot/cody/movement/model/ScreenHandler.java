@@ -92,7 +92,7 @@ public class ScreenHandler {
                                             isAdmin = false;
                                         }
                                         ScreenEvent screenEvent = new ScreenEvent(
-                                                codeHandler.getNodeList(), sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
+                                                codeHandler.getInputEvent(), sensorHandler.getAcceleratorQueue(), sensorHandler.getGyroscopeQueue(),
                                                 FileUtils.getCurrentActivityName(ctx), dir,isAdmin);
                                         FLAG_SAVING_SCREEN_EVENT = false; // 将传感器值写入生成队列
 

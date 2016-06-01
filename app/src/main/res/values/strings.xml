@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">movementSecurity</string>
+    <string name="app_name">SilentGuard</string>
     <string name="action_settings">Settings</string>
 
     <string name="str_btn_start_monitor">开始收集数据</string>
